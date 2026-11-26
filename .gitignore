@@ -1,0 +1,31 @@
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache & testing
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.pytest_cache/
+
+# Sensitive environment variables
+.env
+
+# Local SQLite databases generated during failover
+*.db
+*.sqlite
+*.sqlite3
+database/local_sahayak.db
+
+# Logs & temp files
+*.log
+scratch/
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

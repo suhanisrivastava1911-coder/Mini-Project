@@ -1,0 +1,184 @@
+{
+  "info": {
+    "_postman_id": "7b8d4e92-1234-4567-8901-abcdef123456",
+    "name": "AI Scheme Sahayak - Full REST API Collection",
+    "description": "Comprehensive Postman test collection for AI Scheme Sahayak (Problem Statement 26092). Covers Auth, Profile, NLP, Chat, Matching, Schemes, Checklists, and Admin endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health & Meta",
+      "item": [
+        {
+          "name": "System Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/health", "host": ["{{baseUrl}}"], "path": ["api", "health"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User with Consent",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ramesh Patel\",\n  \"email\": \"ramesh.patel@example.com\",\n  \"password\": \"Password@123\",\n  \"preferred_language\": \"hi\",\n  \"consent_data_collection\": true\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register"] }
+          }
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"asha.devi@demo.local\",\n  \"password\": \"DemoPass@123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Get Current Session (Me)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/auth/me", "host": ["{{baseUrl}}"], "path": ["api", "auth", "me"] }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/auth/logout", "host": ["{{baseUrl}}"], "path": ["api", "auth", "logout"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "NLP & Speech Processing",
+      "item": [
+        {
+          "name": "Extract Profile from Vernacular Text",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Main aurat hun, Varanasi UP se, handloom ka kaam hai, 2.5 lakh loan chahiye\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/nlp/extract", "host": ["{{baseUrl}}"], "path": ["api", "nlp", "extract"] }
+          }
+        },
+        {
+          "name": "Normalize Vernacular / Hinglish Text",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Mahila karz anudan shuru karna\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/nlp/normalize", "host": ["{{baseUrl}}"], "path": ["api", "nlp", "normalize"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Conversational AI Chat",
+      "item": [
+        {
+          "name": "Send Message to AI Assistant",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Main mahila hun aur Varanasi me textile factory kholna chahti hun, 5 lakh loan chahiye\",\n  \"language\": \"hi\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/chat/message", "host": ["{{baseUrl}}"], "path": ["api", "chat", "message"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Matching Engine",
+      "item": [
+        {
+          "name": "Execute 4-Stage Scheme Matching",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"profile\": {\n    \"gender\": \"Female\",\n    \"social_category\": \"OBC\",\n    \"state\": \"Uttar Pradesh\",\n    \"district\": \"Varanasi\",\n    \"business_sector\": \"Textiles & Handloom\",\n    \"funding_requirement\": 500000,\n    \"business_stage\": \"Ideation\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/matching/find-schemes", "host": ["{{baseUrl}}"], "path": ["api", "matching", "find-schemes"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public Schemes Catalog",
+      "item": [
+        {
+          "name": "List All Schemes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/schemes", "host": ["{{baseUrl}}"], "path": ["api", "schemes"] }
+          }
+        },
+        {
+          "name": "Get Scheme by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/schemes/1", "host": ["{{baseUrl}}"], "path": ["api", "schemes", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Portal",
+      "item": [
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"superadmin\",\n  \"password\": \"Admin@Sahayak2026\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/admin/login", "host": ["{{baseUrl}}"], "path": ["api", "admin", "login"] }
+          }
+        },
+        {
+          "name": "Admin Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/admin/dashboard/stats", "host": ["{{baseUrl}}"], "path": ["api", "admin", "dashboard", "stats"] }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:5000",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account | AI Scheme Sahayak</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="manifest" href="/manifest.json">
+  <style>
+    .auth-split-wrapper {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      background: #FFFFFF;
+    }
+    .auth-brand-side {
+      background: var(--grad-dark);
+      color: #FFFFFF;
+      padding: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-form-side {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3rem 4rem;
+      background: #FFFFFF;
+      overflow-y: auto;
+    }
+    .password-input-wrap {
+      position: relative;
+    }
+    .toggle-pw-btn {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      padding: 0.25rem;
+    }
+    .toggle-pw-btn:hover {
+      color: var(--navy-800);
+    }
+    @media (max-width: 960px) {
+      .auth-split-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .auth-brand-side {
+        display: none;
+      }
+      .auth-form-side {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body style="background: #FFFFFF;">
+  <div class="auth-split-wrapper">
+    <!-- Left Brand & Value Proposition Column -->
+    <div class="auth-brand-side">
+      <div>
+        <a href="/" class="brand-logo" style="color: #FFFFFF;">
+          <div class="logo-mark">ASS</div>
+          <div class="brand-text">
+            <span class="brand-title" style="color: #FFFFFF; font-size: 1.25rem;">AI Scheme Sahayak</span>
+            <span class="brand-sub" style="color: var(--primary-400);">Problem Statement ID: 26092</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="my-auto py-4">
+        <span class="badge badge-accent mb-3" style="background: rgba(99,102,241,0.25); color: #FFFFFF; border-color: rgba(255,255,255,0.2);">Free &amp; Verified</span>
+        <h1 style="font-size: 2.25rem; font-weight: 800; line-height: 1.25; color: #FFFFFF; margin-bottom: 1.25rem;">
+          Connect directly to Central &amp; State government capital.
+        </h1>
+        <p style="color: #CBD5E1; font-size: 1.05rem; line-height: 1.6; max-width: 480px;">
+          Create your entrepreneur profile once. Our AI algorithm evaluates 12+ verified schemes, checks your exact eligibility criteria, and prepares your document checklist instantly.
+        </p>
+
+        <div class="grid-2col gap-3 mt-4" style="max-width: 480px;">
+          <div style="background: rgba(255,255,255,0.06); padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12);">
+            <div style="font-size: 1.2rem; font-weight: 700; color: var(--emerald-400);">Zero Fees</div>
+            <div style="font-size: 0.8rem; color: #94A3B8; margin-top: 0.25rem;">100% free public-interest portal. No middlemen or agent fees.</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.06); padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12);">
+            <div style="font-size: 1.2rem; font-weight: 700; color: #93C5FD;">AES-256 Safe</div>
+            <div style="font-size: 0.8rem; color: #94A3B8; margin-top: 0.25rem;">Encrypted storage for demographic and business data.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size: 0.82rem; color: #64748B;">
+        &copy; 2026 AI Scheme Sahayak &bull; Smart Automation &bull; Smart India Hackathon
+      </div>
+    </div>
+
+    <!-- Right Registration Form Column -->
+    <div class="auth-form-side">
+      <div style="max-width: 520px; width: 100%; margin: 0 auto;">
+        
+        <div class="mb-4">
+          <a href="/" style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.88rem; font-weight: 600; color: var(--text-muted); text-decoration: none; margin-bottom: 1rem;">
+            &larr; Back to Home
+          </a>
+          <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--navy-800); margin-bottom: 0.35rem;">
+            Create Your Account
+          </h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Join to discover personalized schemes, subsidies, and application checklists.
+          </p>
+        </div>
+
+        <!-- Alert Notification -->
+        <div id="alert-box" class="alert hidden mb-3" style="border-radius: 8px; font-size: 0.92rem; padding: 0.85rem 1rem;"></div>
+
+        <form id="register-form" novalidate>
+          <!-- Full Name -->
+          <div class="form-group mb-3">
+            <label for="full_name" class="form-label" style="font-weight: 600; color: var(--navy-800); font-size: 0.88rem;">
+              Full Name <span style="color: var(--danger);">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="full_name" 
+              class="form-input" 
+              placeholder="e.g. Ramesh Kumar / आशा देवी" 
+              required 
+              autocomplete="name"
+              style="padding: 0.75rem 0.95rem; font-size: 0.95rem; border-radius: 8px;"
+            >
+          </div>
+
+          <!-- Email & Mobile in Responsive Row -->
+          <div class="grid-2col gap-3 mb-3">
+            <div class="form-group">
+              <label for="email" class="form-label" style="font-weight: 600; color: var(--navy-800); font-size: 0.88rem;">
+                Email Address <span style="color: var(--danger);">*</span>
+              </label>
+              <input 
+                type="email" 
+                id="email" 
+                class="form-input" 
+                placeholder="name@example.com" 
+                required 
+                autocomplete="email"
+                style="padding: 0.75rem 0.95rem; font-size: 0.95rem; border-radius: 8px;"
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="phone" class="form-label" style="font-weight: 600; color: var(--navy-800); font-size: 0.88rem;">
+                Mobile Number <span style="color: var(--text-muted); font-weight: 400;">(10 digits)</span>
+              </label>
+              <input 
+                type="tel" 
+                id="phone" 
+                class="form-input" 
+                placeholder="9876543210" 
+                maxlength="10"
+                pattern="[0-9]{10}"
+                autocomplete="tel"
+                style="padding: 0.75rem 0.95rem; font-size: 0.95rem; border-radius: 8px;"
+              >
+            </div>
+          </div>
+
+          <!-- Password & Confirm Password Row -->
+          <div class="grid-2col gap-3 mb-3">
+            <div class="form-group">
+              <label for="password" class="form-label" style="font-weight: 600; color: var(--navy-800); font-size: 0.88rem;">
+                Password <span style="color: var(--danger);">*</span>
+              </label>
+              <div class="password-input-wrap">
+                <input 
+                  type="password" 
+                  id="password" 
+                  class="form-input" 
+                  placeholder="Min. 8 characters" 
+                  required 
+                  minlength="8" 
+                  autocomplete="new-password"
+                  style="padding: 0.75rem 2.5rem 0.75rem 0.95rem; font-size: 0.95rem; border-radius: 8px;"
+                >
+                <button type="button" class="toggle-pw-btn" onclick="togglePasswordVisibility('password', this)" title="Toggle password visibility">
+                  👁️
+                </button>
+              </div>
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Include letters &amp; numbers</span>
+            </div>
+
+            <div class="form-group">
+              <label for="confirm_password" class="form-label" style="font-weight: 600; color: var(--navy-800); font-size: 0.88rem;">
+                Confirm Password <span style="color: var(--danger);">*</span>
+              </label>
+              <div class="password-input-wrap">
+                <input 
+                  type="password" 
+                  id="confirm_password" 
+                  class="form-input" 
+                  placeholder="Re-type password" 
+                  required 
+                  minlength="8" 
+                  autocomplete="new-password"
+                  style="padding: 0.75rem 2.5rem 0.75rem 0.95rem; font-size: 0.95rem; border-radius: 8px;"
+                >
+                <button type="button" class="toggle-pw-btn" onclick="togglePasswordVisibility('confirm_password', this)" title="Toggle password visibility">
+                  👁️
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preferred Language -->
+          <div class="form-group mb-3">
+            <label for="preferred_language" class="form-label" style="font-weight: 600; color: var(--navy-800); font-size: 0.88rem;">
+              Preferred Interface Language
+            </label>
+            <select id="preferred_language" class="form-select" style="padding: 0.75rem 0.95rem; font-size: 0.95rem; border-radius: 8px;">
+              <option value="en">English</option>
+              <option value="hi" selected>हिन्दी (Hindi)</option>
+              <option value="hinglish">Hinglish</option>
+              <option value="bn">বাংলা (Bengali)</option>
+              <option value="mr">मराठी (Marathi)</option>
+              <option value="ta">தமிழ் (Tamil)</option>
+              <option value="te">తెలుగు (Telugu)</option>
+              <option value="gu">ગુજરાતી (Gujarati)</option>
+              <option value="kn">ಕನ್ನಡ (Kannada)</option>
+              <option value="ml">മലയാളം (Malayalam)</option>
+            </select>
+          </div>
+
+          <!-- Consent Box -->
+          <div class="p-3 bg-light rounded mb-4" style="border: 1px solid var(--border-color); background: #F8FAFC;">
+            <label class="checkbox-label" style="display: flex; align-items: flex-start; gap: 0.65rem; cursor: pointer;">
+              <input type="checkbox" id="consent_checkbox" required style="margin-top: 0.2rem; cursor: pointer;">
+              <span style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.45;">
+                I consent to the collection and AES-256 encrypted storage of my business and demographic data solely for scheme matching and eligibility verification under Problem Statement ID: 26092. Data is never shared with unauthorized parties.
+              </span>
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <button 
+            type="submit" 
+            id="btn-submit" 
+            class="btn btn-primary btn-block btn-lg"
+            style="padding: 0.9rem; font-size: 1rem; font-weight: 700; border-radius: 8px;"
+          >
+            Create Account &amp; Explore Schemes &rarr;
+          </button>
+        </form>
+
+        <div class="text-center mt-4 pt-3" style="border-top: 1px solid var(--border-color);">
+          <p style="font-size: 0.92rem; color: var(--text-muted);">
+            Already have an account? 
+            <a href="/pages/login.html" style="color: var(--primary-600); font-weight: 700; text-decoration: none;">
+              Sign In here &rarr;
+            </a>
+          </p>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
+            Want to test without registering? 
+            <a href="/pages/schemes.html" style="color: var(--navy-800); font-weight: 600;">
+              Browse schemes directly
+            </a>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function togglePasswordVisibility(fieldId, btn) {
+      const field = document.getElementById(fieldId);
+      if (field.type === 'password') {
+        field.type = 'text';
+        btn.textContent = '🙈';
+      } else {
+        field.type = 'password';
+        btn.textContent = '👁️';
+      }
+    }
+
+    const form = document.getElementById('register-form');
+    const alertBox = document.getElementById('alert-box');
+    const btnSubmit = document.getElementById('btn-submit');
+
+    function showAlert(msg, isSuccess = false) {
+      alertBox.className = isSuccess ? 'alert alert-success' : 'alert alert-danger';
+      alertBox.textContent = msg;
+      alertBox.classList.remove('hidden');
+      alertBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alertBox.classList.add('hidden');
+
+      const fullName = document.getElementById('full_name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm_password').value;
+      const lang = document.getElementById('preferred_language').value;
+      const consent = document.getElementById('consent_checkbox').checked;
+
+      // Validation
+      if (!fullName) {
+        showAlert('Please enter your full name.');
+        return;
+      }
+      if (!email || !email.includes('@') || !email.includes('.')) {
+        showAlert('Please enter a valid email address.');
+        return;
+      }
+      if (phone && !/^[0-9]{10}$/.test(phone)) {
+        showAlert('Mobile number must be exactly 10 digits.');
+        return;
+      }
+      if (password.length < 8) {
+        showAlert('Password must be at least 8 characters long.');
+        return;
+      }
+      if (!/[A-Za-z]/.test(password) || !/[0-9]/.test(password)) {
+        showAlert('Password must contain both letters and numbers.');
+        return;
+      }
+      if (password !== confirmPassword) {
+        showAlert('Passwords do not match. Please re-enter your password.');
+        return;
+      }
+      if (!consent) {
+        showAlert('Please accept the consent terms to proceed.');
+        return;
+      }
+
+      btnSubmit.disabled = true;
+      btnSubmit.innerHTML = '<span>Creating Account...</span>';
+
+      const payload = {
+        name: fullName,
+        email: email,
+        phone: phone,
+        password: password,
+        confirm_password: confirmPassword,
+        preferred_language: lang,
+        consent_data_collection: true
+      };
+
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          showAlert('Account created successfully! Redirecting directly to Scheme Search...', true);
+          // Store session data in localStorage as well for robust client-side state
+          if (data.user) {
+            localStorage.setItem('user', JSON.stringify(data.user));
+          }
+          setTimeout(() => {
+            // Immediate redirection to the scheme searching page as requested
+            window.location.href = data.redirect_url || '/pages/schemes.html';
+          }, 600);
+        } else {
+          showAlert(data.error || 'Failed to create account. Please check your details.');
+          btnSubmit.disabled = false;
+          btnSubmit.textContent = 'Create Account & Explore Schemes →';
+        }
+      } catch (err) {
+        console.error('Registration network error:', err);
+        showAlert('Server connection error. Please verify the backend is running and try again.');
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = 'Create Account & Explore Schemes →';
+      }
+    });
+  </script>
+</body>
+</html>

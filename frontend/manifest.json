@@ -1,0 +1,21 @@
+{
+  "name": "AI Scheme Sahayak",
+  "short_name": "SchemeSahayak",
+  "description": "AI-Driven Scheme Matching for Marginalized Entrepreneurs",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d233a",
+  "theme_color": "#0d233a",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><circle cx='96' cy='96' r='90' fill='%230d233a'/><path d='M60 130 L96 60 L132 130 Z' fill='%23f59e0b'/><circle cx='96' cy='92' r='16' fill='%2310b981'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><circle cx='256' cy='256' r='240' fill='%230d233a'/><path d='M160 350 L256 160 L352 350 Z' fill='%23f59e0b'/><circle cx='256' cy='246' r='42' fill='%2310b981'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

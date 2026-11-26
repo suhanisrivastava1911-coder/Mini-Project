@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI Scheme Sahayak - AI-Driven Scheme Matching for Marginalized Entrepreneurs. Discover verified government and private schemes for your business.">
+  <meta name="theme-color" content="#4F46E5">
+  <title>AI Scheme Sahayak | The Right Government Scheme for Your Entrepreneurial Journey</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%234F46E5'/><path d='M30 65 L50 30 L70 65 Z' fill='%23F59E0B'/><circle cx='50' cy='46' r='8' fill='%2310B981'/></svg>">
+</head>
+<body>
+  <!-- Offline banner -->
+  <div id="offline-banner" class="offline-banner hidden">
+    <span>⚠️ You are currently offline. Showing cached scheme information. Some actions require internet connection.</span>
+  </div>
+
+  <!-- Header & Navigation Bar -->
+  <header class="app-header">
+    <div class="header-container">
+      <a href="/" class="brand-logo" aria-label="AI Scheme Sahayak Home">
+        <div class="logo-mark">ASS</div>
+        <div class="brand-text">
+          <span class="brand-title">AI Scheme Sahayak</span>
+          <span class="brand-sub">Government &amp; Private Scheme Matching</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu" id="nav-menu">
+        <a href="/" class="nav-link active" data-i18n="nav_home">Home</a>
+        <a href="/pages/schemes.html" class="nav-link" data-i18n="nav_schemes">Explore Schemes</a>
+        <a href="/pages/how_it_works.html" class="nav-link" data-i18n="nav_how_it_works">How It Works</a>
+        <a href="/pages/about.html" class="nav-link" data-i18n="nav_about">About &amp; Ethics</a>
+        <a href="/pages/chat.html" class="nav-link nav-highlight" data-i18n="nav_ai_assistant">✨ AI Assistant</a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="lang-selector">
+          <label for="lang-select" class="visually-hidden" style="display:none;">Language</label>
+          <select id="lang-select" class="select-lang" aria-label="Select Language">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="hinglish">Hinglish</option>
+            <option value="bn">বাংলা (Bengali)</option>
+            <option value="mr">मराठी (Marathi)</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+            <option value="te">తెలుగు (Telugu)</option>
+            <option value="gu">ગુજરાતી (Gujarati)</option>
+            <option value="kn">ಕನ್ನಡ (Kannada)</option>
+            <option value="ml">മലയാളം (Malayalam)</option>
+          </select>
+        </div>
+
+        <div id="auth-buttons" class="auth-buttons flex gap-2">
+          <a href="/pages/login.html" class="btn btn-outline btn-sm" data-i18n="btn_login">Login</a>
+          <a href="/pages/register.html" class="btn btn-primary btn-sm" data-i18n="btn_register">Register</a>
+        </div>
+
+        <div id="user-avatar" class="user-avatar hidden flex align-center gap-2">
+          <a href="/pages/dashboard.html" class="btn btn-sm btn-outline" id="user-display-name">Dashboard</a>
+          <button id="btn-logout" class="btn btn-sm btn-danger">Logout</button>
+        </div>
+
+        <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <div class="badge badge-accent mb-3">
+            <span class="pulse-dot"></span> Official &amp; Verified Schemes for Micro &amp; Marginalized Entrepreneurs
+          </div>
+          <h1 class="hero-title" data-i18n="hero_title">
+            The Right Government Scheme for Your <span class="highlight">Entrepreneurial Journey.</span>
+          </h1>
+          <p class="hero-subtitle" data-i18n="hero_desc">
+            Overcome language, literacy, and paperwork barriers. Our transparent AI analyzes your business, caste category, location, and investment stage to recommend 100% eligible central &amp; state schemes with zero guesswork.
+          </p>
+          <div class="hero-cta-group">
+            <a href="/pages/chat.html" class="btn btn-primary btn-lg" data-i18n="cta_find_schemes">
+              <span>🎯 Find My Schemes with AI</span>
+            </a>
+            <a href="/pages/schemes.html" class="btn btn-outline btn-lg" data-i18n="cta_explore">
+              <span>🔍 Browse All Schemes</span>
+            </a>
+          </div>
+          <div class="trust-indicators">
+            <div class="trust-item">
+              <span class="trust-icon">🔒</span>
+              <span>100% Data Privacy &amp; Consent</span>
+            </div>
+            <div class="trust-item">
+              <span class="trust-icon">🏛️</span>
+              <span>Central &amp; State Schemes</span>
+            </div>
+            <div class="trust-item">
+              <span class="trust-icon">🎙️</span>
+              <span>Multilingual Voice Support</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-card-preview">
+          <div class="preview-box">
+            <div class="preview-header">
+              <div class="flex align-center gap-3">
+                <div class="avatar-circle">AD</div>
+                <div>
+                  <div class="font-bold text-navy text-sm">Asha Devi</div>
+                  <div class="text-xs text-muted">Varanasi, UP • Handloom &amp; Textiles</div>
+                </div>
+              </div>
+              <span class="badge badge-success">Profile 100% Complete</span>
+            </div>
+
+            <div class="preview-body">
+              <div class="flex gap-1 mb-3 flex-wrap">
+                <span class="badge badge-light">Women Entrepreneur</span>
+                <span class="badge badge-light">OBC Category</span>
+                <span class="badge badge-light">₹2.4 Lakh Income</span>
+              </div>
+              <div class="match-sample-card">
+                <div class="flex-between">
+                  <h4 class="font-bold text-navy text-base">PMEGP Scheme</h4>
+                  <span class="match-score-badge score-high">96% Match</span>
+                </div>
+                <p class="text-xs text-muted mt-1">Up to 35% Capital Subsidy for Rural Women in Manufacturing.</p>
+                <div class="reasons-preview mt-2">
+                  <span class="tag-pass">✓ Mandatory Gender &amp; Sector Gate Passed</span>
+                  <span class="tag-pass">✓ Subsidy matched to rural project limit</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="preview-footer mt-4">
+              <a href="/pages/chat.html" class="btn btn-sm btn-block btn-accent">Try Conversational Matching &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Beneficiary Categories -->
+    <section class="section section-light">
+      <div class="container text-center">
+        <h2 class="section-title">Empowering Marginalized &amp; Underserved Creators</h2>
+        <p class="section-subtitle">Tailored eligibility gates designed for targeted government welfare programs</p>
+
+        <div class="beneficiary-grid">
+          <div class="benefit-card">
+            <div class="benefit-icon">👩‍💼</div>
+            <h3 class="font-bold text-navy text-lg mb-2">Women Entrepreneurs</h3>
+            <p class="text-sm text-muted">Special capital subsidies up to 35%, collateral-free loans, and targeted credit guarantees like Stand-Up India and Mudra Tarun.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">🌱</div>
+            <h3 class="font-bold text-navy text-lg mb-2">SC, ST &amp; OBC Communities</h3>
+            <p class="text-sm text-muted">Dedicated subsidies, concessional finance through NSSH and NSFDC, and specialized vendor development allocations.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">🔨</div>
+            <h3 class="font-bold text-navy text-lg mb-2">Artisans &amp; Craftspersons</h3>
+            <p class="text-sm text-muted">PM Vishwakarma tool-kit incentives, ₹3 Lakh collateral-free enterprise credit, and skill upgrade stipends.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">🛒</div>
+            <h3 class="font-bold text-navy text-lg mb-2">Street Vendors &amp; Micro-Units</h3>
+            <p class="text-sm text-muted">Micro-working capital under PM SVANidhi with interest cashback on digital transactions and zero security deposit.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works 4-step workflow -->
+    <section class="section">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="section-title" data-i18n="how_it_works_title">How AI Scheme Sahayak Works</h2>
+          <p class="section-subtitle">A transparent 4-stage matching engine with zero hidden assumptions</p>
+        </div>
+
+        <div class="workflow-steps">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <h3 class="font-bold text-navy text-base mb-1">Multilingual Profile Input</h3>
+            <p class="text-sm text-muted">Tell us about your business via voice, chatbot, or simple form in Hindi, English, Hinglish or 10 regional languages.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <h3 class="font-bold text-navy text-base mb-1">Hard Eligibility Filter</h3>
+            <p class="text-sm text-muted">Mandatory gates (gender, caste, state, turnover limits) ensure you are never falsely shown schemes you cannot apply for.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <h3 class="font-bold text-navy text-base mb-1">Weighted AI Scoring</h3>
+            <p class="text-sm text-muted">Scores each scheme (0-100) based on financial fit, sector alignment, business maturity stage, and social category priority.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">4</div>
+            <h3 class="font-bold text-navy text-base mb-1">Clear Application Guidance</h3>
+            <p class="text-sm text-muted">Get exact document checklists, step-by-step procedures, deadline tracking, and direct links to official government portals.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Verified Live Schemes Preview -->
+    <section class="section section-light">
+      <div class="container">
+        <div class="flex-between align-center mb-4 flex-wrap gap-2">
+          <div>
+            <h2 class="section-title mb-1">Featured Central &amp; State Schemes</h2>
+            <p class="text-muted text-sm">Verified against official ministry guidelines as of 2026</p>
+          </div>
+          <a href="/pages/schemes.html" class="btn btn-outline btn-sm">View All Schemes &rarr;</a>
+        </div>
+
+        <div class="scheme-grid" id="featured-schemes-container">
+          <div class="scheme-card">
+            <span class="badge badge-primary">Central</span>
+            <h3 class="scheme-title mt-2">Loading verified schemes...</h3>
+            <p class="scheme-desc">Connecting to government scheme directory...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-subtitle">Everything you need to know about our data sources, privacy, and accuracy</p>
+        </div>
+
+        <div class="faq-accordion">
+          <details class="faq-item">
+            <summary class="faq-question">Does AI Scheme Sahayak submit applications on my behalf?</summary>
+            <div class="faq-answer">
+              <p>No. We provide intelligent matching, document readiness checklists, and direct verified links to official government portals (such as Udyam, JanSamarth, or PMEGP e-Portal). Final applications and approvals occur strictly on designated government portals.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">Is my personal and business data secure?</summary>
+            <div class="faq-answer">
+              <p>Yes. Your privacy is paramount. We use PBKDF2 password hashing, AES-256 encryption for sensitive details (income, caste, district), and strict user consent protocols. You can also explore schemes anonymously or delete your profile anytime.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">Can I use voice input in Hindi or my regional language?</summary>
+            <div class="faq-answer">
+              <p>Yes! In supported modern browsers, you can speak directly in Hindi or English using the microphone button on our AI Assistant page. Our NLP engine normalizes spoken Hinglish terms and conversational amounts (e.g., "50 hazar", "2 lakh").</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">How are demonstration records handled?</summary>
+            <div class="faq-answer">
+              <p>All officially verified government schemes are clearly tagged with an official ministry verification badge. Any synthetic or test records are prominently labelled as "DEMO / TEST SCHEME" to uphold absolute transparency.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="cta-banner">
+      <div class="container text-center">
+        <h2>Ready to Claim What Your Business is Entitled To?</h2>
+        <p class="text-muted text-lg mb-4" style="color: #94A3B8;">It takes less than 2 minutes to discover every central and state subsidy you qualify for.</p>
+        <a href="/pages/chat.html" class="btn btn-accent btn-lg">Start Free AI Matching &rarr;</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand-logo footer-logo">
+          <div class="logo-mark">ASS</div>
+          <span class="brand-title text-white">AI Scheme Sahayak</span>
+        </div>
+        <p class="text-muted text-sm mt-3" style="color: #94A3B8;">
+          Problem Statement ID: 26092 | Smart Automation &amp; Financial Inclusion. Built with Python, Flask, MySQL, and modern accessible frontend technologies.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/pages/schemes.html">Browse Schemes</a></li>
+          <li><a href="/pages/chat.html">AI Assistant</a></li>
+          <li><a href="/pages/how_it_works.html">How It Works</a></li>
+          <li><a href="/pages/about.html">About &amp; Safeguards</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Official Portals</h4>
+        <ul class="footer-links">
+          <li><a href="https://www.myscheme.gov.in" target="_blank" rel="noopener">MyScheme Portal</a></li>
+          <li><a href="https://udyamregistration.gov.in" target="_blank" rel="noopener">Udyam Registration</a></li>
+          <li><a href="https://www.jansamarth.in" target="_blank" rel="noopener">JanSamarth Portal</a></li>
+          <li><a href="https://kviconline.gov.in/pmegpeportal" target="_blank" rel="noopener">PMEGP e-Portal</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Admin &amp; Legal</h4>
+        <ul class="footer-links">
+          <li><a href="/pages/admin_login.html">Officer / Admin Login</a></li>
+          <li><a href="/pages/about.html#privacy">Data Privacy Policy</a></li>
+          <li><a href="/pages/about.html#transparency">Scoring Transparency</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container flex-between flex-wrap gap-2">
+        <p>&copy; 2026 AI Scheme Sahayak. Dedicated to India's Marginalized Entrepreneurs.</p>
+        <p class="text-sm" style="color: #64748B;">Problem Statement 26092</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/js/i18n.js"></script>
+  <script src="/static/js/pwa.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Check auth state
+      try {
+        const authRes = await fetch('/api/auth/me');
+        if (authRes.ok) {
+          const authData = await authRes.json();
+          if (authData.authenticated) {
+            document.getElementById('auth-buttons').classList.add('hidden');
+            const avatar = document.getElementById('user-avatar');
+            avatar.classList.remove('hidden');
+            document.getElementById('user-display-name').textContent = authData.user.name || 'Dashboard';
+          }
+        }
+      } catch (err) {
+        console.warn('Auth check skipped:', err);
+      }
+
+      // Load featured schemes
+      const container = document.getElementById('featured-schemes-container');
+      try {
+        const res = await fetch('/api/schemes?limit=3');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.schemes && data.schemes.length > 0) {
+            container.innerHTML = data.schemes.slice(0, 3).map(s => `
+              <div class="scheme-card">
+                <div>
+                  <div class="flex-between align-center mb-2">
+                    <span class="badge ${s.is_demo ? 'badge-warning' : 'badge-primary'}">${s.is_demo ? 'DEMO RECORD' : (s.authority_level || 'CENTRAL').toUpperCase()}</span>
+                    <span class="text-xs text-muted">${escapeHtml(s.ministry_or_org || 'Govt of India')}</span>
+                  </div>
+                  <h3 class="scheme-title">${escapeHtml(s.scheme_name)}</h3>
+                  <p class="scheme-desc">${escapeHtml((s.scheme_description || '').substring(0, 130))}...</p>
+                </div>
+                <div>
+                  <div class="scheme-meta mb-3">
+                    <div><strong>Benefit:</strong> ${escapeHtml(s.benefit_type || 'Capital Subsidy / Loan')}</div>
+                    <div><strong>Max Amount:</strong> ₹${formatCurrency(s.max_benefit_amount)}</div>
+                  </div>
+                  <a href="/pages/scheme_details.html?id=${s.id}" class="btn btn-outline btn-sm btn-block">View Eligibility Details &rarr;</a>
+                </div>
+              </div>
+            `).join('');
+          } else {
+            container.innerHTML = '<p class="text-muted">No schemes available at this moment.</p>';
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to load featured schemes:', e);
+      }
+
+      // Logout handler
+      document.getElementById('btn-logout')?.addEventListener('click', async () => {
+        await fetch('/api/auth/logout', { method: 'POST' });
+        window.location.reload();
+      });
+    });
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[m]));
+    }
+    function formatCurrency(val) {
+      if (!val) return 'Varies';
+      const num = Number(val);
+      if (num >= 10000000) return (num / 10000000).toFixed(1) + ' Crore';
+      if (num >= 100000) return (num / 100000).toFixed(1) + ' Lakh';
+      return num.toLocaleString('en-IN');
+    }
+  </script>
+</body>
+</html>

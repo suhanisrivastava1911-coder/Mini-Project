@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scheme Details &amp; Application Guide | AI Scheme Sahayak</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="manifest" href="/manifest.json">
+</head>
+<body class="dashboard-layout">
+  <!-- Top Nav -->
+  <header class="app-header">
+    <div class="header-container">
+      <a href="/" class="brand-logo">
+        <div class="logo-mark">ASS</div>
+        <div class="brand-text">
+          <span class="brand-title">AI Scheme Sahayak</span>
+          <span class="brand-sub">Scheme Details</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="/pages/dashboard.html" class="nav-link">Dashboard</a>
+        <a href="/pages/schemes.html" class="nav-link">All Schemes</a>
+        <a href="/pages/chat.html" class="nav-link">✨ AI Assistant</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="/pages/schemes.html" class="btn btn-sm btn-outline">&larr; Back to Schemes</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container py-5">
+    <div id="scheme-details-container">
+      <div class="card p-5 text-center text-muted">Loading scheme details...</div>
+    </div>
+  </main>
+
+  <script src="/static/js/i18n.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const schemeId = urlParams.get('id');
+      const container = document.getElementById('scheme-details-container');
+
+      if (!schemeId) {
+        container.innerHTML = `
+          <div class="card p-5 text-center">
+            <div class="text-4xl mb-2">⚠️</div>
+            <h3 class="font-bold text-navy text-lg">No Scheme Selected</h3>
+            <p class="text-xs text-muted mt-1">Please select a scheme from the directory.</p>
+            <div class="mt-3">
+              <a href="/pages/schemes.html" class="btn btn-primary btn-sm">Browse All Schemes</a>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/schemes/${schemeId}`);
+        if (!res.ok) {
+          throw new Error(`Scheme with ID ${schemeId} was not found on the server.`);
+        }
+        const data = await res.json();
+        const s = data.scheme || {};
+        const docs = data.documents || s.documents || [];
+        const steps = data.steps || s.steps || s.guide_steps || [];
+
+        container.innerHTML = `
+          <!-- Header Overview Card -->
+          <div class="card p-5 mb-4">
+            <div class="flex-between align-start flex-wrap gap-3">
+              <div>
+                <div class="flex align-center gap-2 mb-2">
+                  <span class="badge ${s.is_demo ? 'badge-warning' : 'badge-primary'}">${s.is_demo ? 'DEMO RECORD' : (s.authority_level || 'CENTRAL').toUpperCase()}</span>
+                  <span class="text-xs text-muted font-bold">${escapeHtml(s.ministry_or_org || 'Government of India')}</span>
+                  <span class="badge badge-success">Official &amp; Verified</span>
+                </div>
+                <h1 class="font-bold text-navy text-3xl">${escapeHtml(s.scheme_name)}</h1>
+                ${s.scheme_name_hi ? `<div class="text-sm font-semibold text-muted mt-1">${escapeHtml(s.scheme_name_hi)}</div>` : ''}
+                <p class="text-body text-base mt-2 max-w-700">${escapeHtml(s.scheme_description || '')}</p>
+              </div>
+              <div class="flex align-center gap-2 flex-wrap">
+                <button id="btn-bookmark" class="btn btn-sm btn-outline">⭐ Bookmark Scheme</button>
+                <a href="${escapeHtml(s.official_url || s.official_portal_url || '#')}" target="_blank" rel="noopener" class="btn btn-sm btn-primary">
+                  Official Portal &rarr;
+                </a>
+              </div>
+            </div>
+
+            <!-- Key Parameters Bar -->
+            <div class="stat-grid mt-4 pt-4 border-top">
+              <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-info">
+                  <div class="stat-val text-emerald">₹${formatCurrency(s.max_benefit_amount)}</div>
+                  <div class="stat-label">Maximum Benefit Cap</div>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">🏷️</div>
+                <div class="stat-info">
+                  <div class="stat-val">${escapeHtml(s.benefit_type || 'Capital Subsidy / Loan')}</div>
+                  <div class="stat-label">Support Category</div>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">🏛️</div>
+                <div class="stat-info">
+                  <div class="stat-val">${escapeHtml(s.eligible_states || 'All India')}</div>
+                  <div class="stat-label">State Domicile Scope</div>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-info">
+                  <div class="stat-val">${escapeHtml(s.eligible_categories || 'All')}</div>
+                  <div class="stat-label">Eligible Social Categories</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Eligibility Guidelines & Criteria -->
+          <div class="card p-5 mb-4">
+            <h2 class="font-bold text-navy text-xl mb-3">Eligibility Criteria &amp; Target Beneficiaries</h2>
+            <div class="p-3 bg-light rounded text-sm text-body leading-relaxed mb-3">
+              ${escapeHtml(s.special_criteria || s.target_beneficiary_groups || 'Standard micro & small enterprise eligibility guidelines apply.')}
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;" class="text-xs">
+              <div><strong>Eligible Genders:</strong> ${escapeHtml(s.eligible_genders || 'All')}</div>
+              <div><strong>Target Sectors:</strong> ${escapeHtml(s.eligible_sectors || 'All Notified Sectors')}</div>
+              <div><strong>Business Stages:</strong> ${escapeHtml(s.eligible_stages || 'Ideation, Startup, Existing MSME')}</div>
+              <div><strong>Subsidy Rate:</strong> ${s.subsidy_percentage ? s.subsidy_percentage + '%' : 'As per guidelines'}</div>
+            </div>
+          </div>
+
+          <!-- Two-Column Layout: Checklist & Guidance Steps -->
+          <div class="grid-2col">
+            <!-- Left: Document Readiness -->
+            <div class="card p-4">
+              <div class="flex-between align-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                <h3 class="font-bold text-navy text-lg">Required Document Readiness</h3>
+                <a href="/pages/guidance.html?scheme_id=${s.id}" class="btn btn-xs btn-primary">Start Interactive Checklist &rarr;</a>
+              </div>
+              <div class="docs-checklist-preview flex-column gap-2">
+                ${docs.length > 0 ? docs.map(d => `
+                  <div class="p-3 bg-light rounded flex-between align-center">
+                    <div>
+                      <strong class="text-sm text-navy block">${escapeHtml(d.document_name || d.name)}</strong>
+                      <span class="text-xs text-muted">${escapeHtml(d.description || d.issuing_authority || 'Official Authority')}</span>
+                    </div>
+                    <span class="badge ${d.is_mandatory ? 'badge-warning' : 'badge-light'} text-xs">${d.is_mandatory ? 'Required' : 'Optional'}</span>
+                  </div>
+                `).join('') : '<p class="text-muted text-xs p-3">Standard proof of identity (Aadhaar/PAN), business profile, and bank passbook required.</p>'}
+              </div>
+            </div>
+
+            <!-- Right: Application Steps -->
+            <div class="card p-4">
+              <h3 class="font-bold text-navy text-lg mb-3 pb-2 border-bottom">Step-by-Step Application Procedure</h3>
+              <div class="steps-timeline flex-column gap-3">
+                ${steps.length > 0 ? steps.map((step, idx) => `
+                  <div class="flex align-start gap-3 p-2 bg-light rounded">
+                    <div class="step-badge">${step.step_number || step.step_order || idx + 1}</div>
+                    <div>
+                      <h4 class="font-bold text-sm text-navy">${escapeHtml(step.step_title || step.title)}</h4>
+                      <p class="text-xs text-muted mt-1 leading-relaxed">${escapeHtml(step.step_description || step.instructions || '')}</p>
+                      ${step.official_action_url ? `<a href="${escapeHtml(step.official_action_url)}" target="_blank" rel="noopener" class="text-xs text-accent font-bold mt-1 block">Visit Step Portal &rarr;</a>` : ''}
+                    </div>
+                  </div>
+                `).join('') : '<p class="text-muted text-xs p-3">Online registration on central ministry portal, document upload, and bank branch appraisal.</p>'}
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('btn-bookmark')?.addEventListener('click', async () => {
+          try {
+            const bRes = await fetch('/api/schemes/save', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ scheme_id: schemeId })
+            });
+            if (bRes.ok) {
+              alert('Scheme bookmarked to your dashboard!');
+            } else {
+              alert('Please log in to bookmark schemes.');
+            }
+          } catch (e) {
+            alert('Failed to bookmark scheme.');
+          }
+        });
+      } catch (err) {
+        container.innerHTML = `
+          <div class="card p-5 text-center">
+            <div class="text-4xl mb-2">⚠️</div>
+            <h3 class="font-bold text-navy text-lg">Unable to load scheme details</h3>
+            <p class="text-xs text-muted mt-1">${escapeHtml(err.message || 'Please check network connection.')}</p>
+            <div class="mt-3">
+              <a href="/pages/schemes.html" class="btn btn-outline btn-sm">&larr; Back to Schemes Directory</a>
+            </div>
+          </div>
+        `;
+      }
+    });
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[m]));
+    }
+    function formatCurrency(val) {
+      if (!val) return 'Varies';
+      const num = Number(val);
+      if (num >= 10000000) return (num / 10000000).toFixed(1) + ' Crore';
+      if (num >= 100000) return (num / 100000).toFixed(1) + ' Lakh';
+      return num.toLocaleString('en-IN');
+    }
+  </script>
+</body>
+</html>

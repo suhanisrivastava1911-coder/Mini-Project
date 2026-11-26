@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conversational AI Assistant | AI Scheme Sahayak</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="manifest" href="/manifest.json">
+</head>
+<body class="chat-page-layout">
+  <!-- Top Nav -->
+  <header class="app-header">
+    <div class="header-container">
+      <a href="/" class="brand-logo">
+        <div class="logo-mark">ASS</div>
+        <div class="brand-text">
+          <span class="brand-title">AI Scheme Sahayak</span>
+          <span class="brand-sub">Conversational AI Engine</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="/pages/dashboard.html" class="nav-link">Dashboard</a>
+        <a href="/pages/chat.html" class="nav-link active">✨ AI Assistant</a>
+        <a href="/pages/profile.html" class="nav-link">My Profile</a>
+        <a href="/pages/schemes.html" class="nav-link">Explore Schemes</a>
+      </nav>
+
+      <div class="header-actions">
+        <select id="chat-lang-select" class="select-lang">
+          <option value="en">English</option>
+          <option value="hi" selected>हिन्दी (Hindi)</option>
+          <option value="hinglish">Hinglish</option>
+          <option value="bn">বাংলা (Bengali)</option>
+          <option value="mr">मराठी (Marathi)</option>
+          <option value="ta">தமிழ் (Tamil)</option>
+          <option value="te">తెలుగు (Telugu)</option>
+          <option value="gu">ગુજરાતી (Gujarati)</option>
+          <option value="kn">ಕನ್ನಡ (Kannada)</option>
+          <option value="ml">മലയാളം (Malayalam)</option>
+        </select>
+        <button id="btn-reset-chat" class="btn btn-xs btn-outline">🔄 Clear</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Split Chat Layout -->
+  <main class="chat-main-container">
+    <!-- Left: Conversational Stream -->
+    <div class="chat-conversation-pane">
+      <div class="chat-header-bar">
+        <div class="chat-bot-status">
+          <div class="status-indicator online"></div>
+          <div>
+            <h3 class="font-bold text-navy text-sm">Sahayak Conversational Assistant</h3>
+            <span class="text-xs text-muted" id="active-lang-status">Speaking: हिन्दी / Hinglish</span>
+          </div>
+        </div>
+        <div class="speech-controls">
+          <button id="btn-toggle-tts" class="btn btn-xs btn-outline" title="Toggle Voice Audio Responses">
+            🔊 Voice Readout
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages Stream -->
+      <div class="chat-messages-scroll" id="chat-messages-container">
+        <div class="chat-msg bot-msg">
+          <div class="msg-avatar">🤖</div>
+          <div class="msg-bubble">
+            <p><strong>नमस्ते!</strong> मैं AI Scheme Sahayak हूँ। अपने बिज़नेस के बारे में बताएं — जैसे आप क्या काम करते हैं, आपका राज्य/जिला क्या है, और आपको कितने लोन या सब्सिडी की ज़रूरत है?</p>
+            <p class="text-xs text-muted mt-2">उदाहरण: <em>"Main Varanasi se hoon, handloom ka kaam shuru karna chahti hoon, 2.5 lakh loan chahiye."</em></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Suggestion Chips -->
+      <div class="chat-quick-chips" id="quick-chips-container">
+        <button class="chip" data-prompt="Main mahila hun aur boutique shuru karna chahti hun, UP se hun">Boutique / Tailoring (UP)</button>
+        <button class="chip" data-prompt="We are SC entrepreneurs looking for manufacturing plant finance in Gujarat">SC Manufacturing Finance</button>
+        <button class="chip" data-prompt="Pottery and handicraft artisan needing ₹3 lakh collateral-free loan">Artisan Tool Support</button>
+        <button class="chip" data-prompt="Street vendor in Delhi needing working capital loan of ₹20,000">Street Vendor (Delhi)</button>
+      </div>
+
+      <!-- Chat Input Area -->
+      <div class="chat-input-bar">
+        <button id="btn-voice-input" class="btn-voice" title="Click to speak in Hindi/English" aria-label="Voice Input">
+          🎙️
+        </button>
+        <textarea id="chat-text-input" class="chat-textarea" placeholder="Type or click microphone to speak..." rows="1"></textarea>
+        <button id="btn-send-message" class="btn btn-primary btn-sm" aria-label="Send Message">
+          Send &rarr;
+        </button>
+      </div>
+      <div id="voice-status-indicator" class="voice-status-text hidden p-2 bg-light text-center text-xs text-danger font-bold">
+        <span class="pulse-dot" style="background-color: var(--rose-500);"></span> Listening to your voice... Speak now in Hindi or English.
+      </div>
+    </div>
+
+    <!-- Right: Extracted Profile & Live Matched Schemes -->
+    <div class="chat-side-preview">
+      <div class="side-tab-header">
+        <button class="tab-btn active" id="tab-profile-btn">Extracted Profile</button>
+        <button class="tab-btn" id="tab-matches-btn">Live Matches (<span id="live-match-count">0</span>)</button>
+      </div>
+
+      <!-- Tab Content: Live Extracted Profile -->
+      <div class="side-tab-content active" id="tab-profile-content">
+        <div class="p-3 bg-light rounded text-xs text-muted mb-3">
+          Our NLP engine extracts your eligibility details in real time as you talk.
+        </div>
+
+        <form id="extracted-profile-form">
+          <div class="profile-field-row">
+            <label>Gender:</label>
+            <select id="field-gender" class="form-select form-select-sm">
+              <option value="">Unknown / Any</option>
+              <option value="Female">Female (महिला)</option>
+              <option value="Male">Male (पुरुष)</option>
+              <option value="Transgender">Transgender (किन्नर / अन्य)</option>
+              <option value="All">All</option>
+            </select>
+          </div>
+
+          <div class="profile-field-row">
+            <label>Social Category:</label>
+            <select id="field-category" class="form-select form-select-sm">
+              <option value="">Unknown</option>
+              <option value="SC">Scheduled Caste (SC)</option>
+              <option value="ST">Scheduled Tribe (ST)</option>
+              <option value="OBC">OBC</option>
+              <option value="General">General</option>
+              <option value="Minority">Minority</option>
+            </select>
+          </div>
+
+          <div class="profile-field-row">
+            <label>State:</label>
+            <input type="text" id="field-state" class="form-input form-input-sm" placeholder="e.g. Uttar Pradesh">
+          </div>
+
+          <div class="profile-field-row">
+            <label>District:</label>
+            <input type="text" id="field-district" class="form-input form-input-sm" placeholder="e.g. Varanasi">
+          </div>
+
+          <div class="profile-field-row">
+            <label>Business Sector:</label>
+            <select id="field-sector" class="form-select form-select-sm">
+              <option value="General">General / Other</option>
+              <option value="Manufacturing">Manufacturing</option>
+              <option value="Services">Services / Retail</option>
+              <option value="Textiles & Handloom">Textiles & Handloom</option>
+              <option value="Artisans & Crafts">Artisans & Crafts</option>
+              <option value="Technology & Startups">Technology & Startups</option>
+              <option value="Street Vending">Street Vending</option>
+            </select>
+          </div>
+
+          <div class="profile-field-row">
+            <label>Business Stage:</label>
+            <select id="field-stage" class="form-select form-select-sm">
+              <option value="Ideation">Ideation / New Business</option>
+              <option value="Startup">Early Stage (&lt; 2 yrs)</option>
+              <option value="Existing MSME">Established MSME</option>
+            </select>
+          </div>
+
+          <div class="profile-field-row">
+            <label>Funding Required (₹):</label>
+            <input type="number" id="field-funding" class="form-input form-input-sm" placeholder="e.g. 500000">
+          </div>
+
+          <div class="mt-4 flex-between">
+            <button type="button" id="btn-save-extracted-profile" class="btn btn-sm btn-primary">Save Profile</button>
+            <button type="button" id="btn-trigger-match" class="btn btn-sm btn-accent">Match Schemes &rarr;</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Tab Content: Live Matched Schemes -->
+      <div class="side-tab-content" id="tab-matches-content">
+        <div id="live-matches-list" class="live-matches-stream flex-column gap-2">
+          <p class="text-muted text-xs p-3">Schemes will appear here in real time as your profile parameters are identified.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/static/js/i18n.js"></script>
+  <script src="/static/js/voice.js"></script>
+  <script src="/static/js/chat.js"></script>
+</body>
+</html>

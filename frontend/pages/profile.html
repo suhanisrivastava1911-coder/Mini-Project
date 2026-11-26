@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Structured Profile Builder | AI Scheme Sahayak</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="manifest" href="/manifest.json">
+</head>
+<body class="dashboard-layout">
+  <!-- Top Nav -->
+  <header class="app-header">
+    <div class="header-container">
+      <a href="/" class="brand-logo">
+        <div class="logo-mark">ASS</div>
+        <div class="brand-text">
+          <span class="brand-title">AI Scheme Sahayak</span>
+          <span class="brand-sub">Entrepreneur Profile</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="/pages/dashboard.html" class="nav-link">Dashboard</a>
+        <a href="/pages/chat.html" class="nav-link">✨ AI Assistant</a>
+        <a href="/pages/profile.html" class="nav-link active">My Profile</a>
+        <a href="/pages/schemes.html" class="nav-link">Explore Schemes</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="/pages/dashboard.html" class="btn btn-sm btn-outline">&larr; Back to Dashboard</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container py-5">
+    <div class="max-w-700 mx-auto">
+      <div class="card p-5">
+        <div class="flex-between align-center mb-4 pb-3 border-bottom flex-wrap gap-2">
+          <div>
+            <h2 class="font-bold text-navy text-2xl">Entrepreneur Profile Builder</h2>
+            <p class="text-sm text-muted mt-1">Fill out your parameters to unlock 100% accurate scheme recommendations</p>
+          </div>
+          <a href="/pages/chat.html" class="btn btn-sm btn-accent">🎙️ Fill via Chat / Voice</a>
+        </div>
+
+        <div id="profile-alert" class="alert hidden mb-4"></div>
+
+        <form id="profile-wizard-form">
+          <!-- Section 1: Demographics -->
+          <h4 class="font-bold text-navy text-base mb-3" style="color: var(--primary-700);">1. Demographic &amp; Personal Criteria</h4>
+          <div class="grid-2col-form">
+            <div class="form-group">
+              <label for="gender" class="form-label">Gender *</label>
+              <select id="gender" class="form-select" required>
+                <option value="">Select Gender</option>
+                <option value="Female">Female (महिला)</option>
+                <option value="Male">Male (पुरुष)</option>
+                <option value="Transgender">Transgender (किन्नर / अन्य)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="social_category" class="form-label">Social Category *</label>
+              <select id="social_category" class="form-select" required>
+                <option value="">Select Category</option>
+                <option value="General">General</option>
+                <option value="OBC">OBC (Other Backward Class)</option>
+                <option value="SC">Scheduled Caste (SC)</option>
+                <option value="ST">Scheduled Tribe (ST)</option>
+                <option value="Minority">Minority Community</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Section 2: Location -->
+          <h4 class="font-bold text-navy text-base mt-3 mb-3" style="color: var(--primary-700);">2. Location &amp; Region</h4>
+          <div class="grid-2col-form">
+            <div class="form-group">
+              <label for="state" class="form-label">State / UT *</label>
+              <select id="state" class="form-select" required>
+                <option value="">Select State</option>
+                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Gujarat">Gujarat</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Tamil Nadu">Tamil Nadu</option>
+                <option value="West Bengal">West Bengal</option>
+                <option value="Rajasthan">Rajasthan</option>
+                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                <option value="Bihar">Bihar</option>
+                <option value="All India">Other / All India</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="district" class="form-label">District (Optional)</label>
+              <input type="text" id="district" class="form-input" placeholder="e.g. Varanasi, Pune">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="location_type" class="form-label">Area Classification</label>
+            <select id="location_type" class="form-select">
+              <option value="Rural">Rural Area (Higher capital subsidies eligible)</option>
+              <option value="Urban">Urban Area</option>
+              <option value="Semi-Urban">Semi-Urban</option>
+            </select>
+          </div>
+
+          <!-- Section 3: Business & Funding -->
+          <h4 class="font-bold text-navy text-base mt-3 mb-3" style="color: var(--primary-700);">3. Business &amp; Financial Needs</h4>
+          <div class="grid-2col-form">
+            <div class="form-group">
+              <label for="business_sector" class="form-label">Business Sector *</label>
+              <select id="business_sector" class="form-select" required>
+                <option value="">Select Sector</option>
+                <option value="Textiles">Textiles & Handloom</option>
+                <option value="Manufacturing">Manufacturing / Production</option>
+                <option value="Handicrafts">Artisans & Traditional Crafts</option>
+                <option value="Street Vending">Street Vending / Micro Retail</option>
+                <option value="Food Processing">Food Processing & Agri-Allied</option>
+                <option value="Technology">Technology & Startups</option>
+                <option value="Services">Services / Retail / Repair</option>
+                <option value="General">General Enterprise</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="business_stage" class="form-label">Business Stage *</label>
+              <select id="business_stage" class="form-select" required>
+                <option value="Ideation">Ideation / New Unit</option>
+                <option value="Startup">Early Stage (&lt; 2 yrs)</option>
+                <option value="Existing MSME">Established MSME</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2col-form">
+            <div class="form-group">
+              <label for="annual_income" class="form-label">Annual Household Income (₹) *</label>
+              <input type="number" id="annual_income" class="form-input" placeholder="e.g. 240000" min="0" required>
+            </div>
+
+            <div class="form-group">
+              <label for="funding_requirement" class="form-label">Funding / Loan Needed (₹) *</label>
+              <input type="number" id="funding_requirement" class="form-input" placeholder="e.g. 500000" min="1000" required>
+            </div>
+          </div>
+
+          <div class="flex-between align-center mt-5 pt-3 border-top flex-wrap gap-2">
+            <button type="submit" id="btn-save-profile" class="btn btn-primary btn-lg">
+              Save Profile &amp; Calculate Schemes &rarr;
+            </button>
+            <a href="/pages/dashboard.html" class="btn btn-outline">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script src="/static/js/i18n.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const res = await fetch('/api/profile');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.profile) {
+            const p = data.profile;
+            document.getElementById('gender').value = p.gender || '';
+            document.getElementById('social_category').value = p.social_category || '';
+            document.getElementById('state').value = p.state || '';
+            document.getElementById('district').value = p.district || '';
+            document.getElementById('location_type').value = p.location_type || 'Rural';
+            document.getElementById('business_sector').value = p.sector || p.business_sector || '';
+            document.getElementById('business_stage').value = p.business_stage || 'Ideation';
+            document.getElementById('annual_income').value = p.household_income || p.annual_income || '';
+            document.getElementById('funding_requirement').value = p.funding_requirement || '';
+          }
+        }
+      } catch (err) {
+        console.warn('Could not prefetch profile:', err);
+      }
+
+      const form = document.getElementById('profile-wizard-form');
+      const alertBox = document.getElementById('profile-alert');
+      const btnSave = document.getElementById('btn-save-profile');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        alertBox.className = 'alert hidden';
+        btnSave.disabled = true;
+        btnSave.textContent = 'Saving profile...';
+
+        const payload = {
+          gender: document.getElementById('gender').value,
+          social_category: document.getElementById('social_category').value,
+          state: document.getElementById('state').value,
+          district: document.getElementById('district').value.trim(),
+          location_type: document.getElementById('location_type').value,
+          business_sector: document.getElementById('business_sector').value,
+          business_stage: document.getElementById('business_stage').value,
+          annual_income: parseFloat(document.getElementById('annual_income').value) || 0,
+          funding_requirement: parseFloat(document.getElementById('funding_requirement').value) || 0
+        };
+
+        try {
+          const res = await fetch('/api/profile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            alertBox.className = 'alert alert-success';
+            alertBox.textContent = 'Profile saved securely! Redirecting to dashboard...';
+            setTimeout(() => window.location.href = '/pages/dashboard.html', 800);
+          } else {
+            alertBox.className = 'alert alert-danger';
+            alertBox.textContent = data.error || 'Failed to save profile.';
+            btnSave.disabled = false;
+            btnSave.textContent = 'Save Profile & Calculate Schemes →';
+          }
+        } catch (err) {
+          alertBox.className = 'alert alert-danger';
+          alertBox.textContent = 'Network or server error.';
+          btnSave.disabled = false;
+          btnSave.textContent = 'Save Profile & Calculate Schemes →';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

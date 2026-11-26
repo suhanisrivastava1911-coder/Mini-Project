@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Government &amp; Private Schemes | AI Scheme Sahayak</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="manifest" href="/manifest.json">
+</head>
+<body class="dashboard-layout">
+  <!-- Top Nav -->
+  <header class="app-header">
+    <div class="header-container">
+      <a href="/" class="brand-logo">
+        <div class="logo-mark">ASS</div>
+        <div class="brand-text">
+          <span class="brand-title">AI Scheme Sahayak</span>
+          <span class="brand-sub">Government Scheme Directory</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="/">Home</a>
+        <a href="/pages/dashboard.html" class="nav-link">Dashboard</a>
+        <a href="/pages/chat.html" class="nav-link">✨ AI Assistant</a>
+        <a href="/pages/schemes.html" class="nav-link active">Explore Schemes</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="/pages/login.html" class="btn btn-sm btn-outline">Login</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container py-5">
+    <!-- Header & Search Filters -->
+    <div class="schemes-header-box mb-4">
+      <div class="flex-between align-center flex-wrap gap-2 mb-3">
+        <div>
+          <h1 class="font-bold text-navy text-3xl">Government &amp; Private Schemes Directory</h1>
+          <p class="text-sm text-muted mt-1">Search through verified central, state, and CSR initiatives by scheme name, sector, ministry, or keywords.</p>
+        </div>
+        <a href="/pages/chat.html" class="btn btn-accent btn-sm">🎯 Match With AI Assistant &rarr;</a>
+      </div>
+
+      <!-- Filters & Search Bar Card -->
+      <div class="card p-4">
+        <div style="display: grid; grid-template-columns: 1.5fr repeat(3, 1fr) auto; gap: 0.85rem; align-items: flex-end;">
+          <div>
+            <label for="filter-search" class="text-xs font-bold text-navy block mb-1">Search Name, Keyword or Trade</label>
+            <div style="position: relative;">
+              <input type="text" id="filter-search" class="form-input form-input-sm" placeholder="e.g. Mudra, PMEGP, Vishwakarma, Loan, Artisan, UP..." style="padding-left: 2rem;">
+              <span style="position: absolute; left: 0.65rem; top: 50%; transform: translateY(-50%); font-size: 0.9rem; color: #94A3B8;">🔍</span>
+            </div>
+          </div>
+          <div>
+            <label for="filter-level" class="text-xs font-bold text-navy block mb-1">Authority Level</label>
+            <select id="filter-level" class="form-select form-select-sm">
+              <option value="">All Authorities</option>
+              <option value="Central">Central Govt</option>
+              <option value="State">State Govt</option>
+              <option value="Private_CSR">Private / CSR</option>
+            </select>
+          </div>
+          <div>
+            <label for="filter-category" class="text-xs font-bold text-navy block mb-1">Business Sector</label>
+            <select id="filter-category" class="form-select form-select-sm">
+              <option value="">All Sectors</option>
+              <option value="Manufacturing">Manufacturing</option>
+              <option value="Textiles">Textiles & Handloom</option>
+              <option value="Handicrafts">Artisans & Crafts</option>
+              <option value="Food Processing">Food Processing</option>
+              <option value="Street Vending">Street Vending</option>
+              <option value="Technology">Technology & Startups</option>
+              <option value="Services">Services / Retail</option>
+            </select>
+          </div>
+          <div>
+            <label for="filter-state" class="text-xs font-bold text-navy block mb-1">State / Region</label>
+            <select id="filter-state" class="form-select form-select-sm">
+              <option value="">All India</option>
+              <option value="Uttar Pradesh">Uttar Pradesh</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Gujarat">Gujarat</option>
+              <option value="Delhi">Delhi</option>
+            </select>
+          </div>
+          <div class="flex gap-2">
+            <button id="btn-apply-filters" class="btn btn-sm btn-primary" title="Search Schemes">Search</button>
+            <button id="btn-reset-filters" class="btn btn-sm btn-outline" title="Reset all filters">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Filter Chips Bar -->
+    <div id="active-filter-chips" class="flex align-center gap-2 mb-3 flex-wrap hidden">
+      <span class="text-xs text-muted font-bold">Active filters:</span>
+      <div id="chips-container" class="flex gap-1 flex-wrap"></div>
+    </div>
+
+    <!-- Schemes Count Bar -->
+    <div class="flex-between align-center mb-4">
+      <span class="text-sm text-muted">Showing <strong id="scheme-count-text" class="text-navy">0</strong> schemes</span>
+      <span class="badge badge-accent">100% Transparent Rule Engine</span>
+    </div>
+
+    <!-- Schemes Grid -->
+    <div id="schemes-grid" class="scheme-grid">
+      <div class="card p-5 text-center text-muted" style="grid-column: 1 / -1;">Loading government schemes...</div>
+    </div>
+  </main>
+
+  <script src="/static/js/i18n.js"></script>
+  <script>
+    let searchDebounceTimer = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadSchemesList();
+
+      const searchInput = document.getElementById('filter-search');
+      const levelSelect = document.getElementById('filter-level');
+      const catSelect = document.getElementById('filter-category');
+      const stateSelect = document.getElementById('filter-state');
+
+      // Instant live search with 250ms debouncing
+      searchInput.addEventListener('input', () => {
+        clearTimeout(searchDebounceTimer);
+        searchDebounceTimer = setTimeout(() => loadSchemesList(), 250);
+      });
+
+      // Filter changes trigger search immediately
+      levelSelect.addEventListener('change', () => loadSchemesList());
+      catSelect.addEventListener('change', () => loadSchemesList());
+      stateSelect.addEventListener('change', () => loadSchemesList());
+
+      document.getElementById('btn-apply-filters').addEventListener('click', () => loadSchemesList());
+      
+      // Reset button resets all fields and reloads catalog
+      document.getElementById('btn-reset-filters').addEventListener('click', () => {
+        searchInput.value = '';
+        levelSelect.value = '';
+        catSelect.value = '';
+        stateSelect.value = '';
+        loadSchemesList();
+      });
+    });
+
+    async function loadSchemesList() {
+      const container = document.getElementById('schemes-grid');
+      container.innerHTML = `
+        <div class="card p-5 text-center text-muted" style="grid-column: 1 / -1;">
+          <div class="stat-icon mx-auto mb-2" style="font-size: 1.5rem;">🔍</div>
+          Searching government scheme catalog...
+        </div>
+      `;
+
+      const search = document.getElementById('filter-search').value.trim();
+      const level = document.getElementById('filter-level').value;
+      const category = document.getElementById('filter-category').value;
+      const state = document.getElementById('filter-state').value;
+
+      updateFilterChips(search, level, category, state);
+
+      let url = `/api/schemes?`;
+      if (search) url += `&q=${encodeURIComponent(search)}`;
+      if (level) url += `&authority=${encodeURIComponent(level)}`;
+      if (category) url += `&category=${encodeURIComponent(category)}`;
+      if (state) url += `&state=${encodeURIComponent(state)}`;
+
+      try {
+        const res = await fetch(url);
+        if (!res.ok) {
+          throw new Error(`Server returned HTTP ${res.status}`);
+        }
+        const data = await res.json();
+        const schemes = data.schemes || [];
+        document.getElementById('scheme-count-text').textContent = schemes.length;
+
+        if (schemes.length === 0) {
+          container.innerHTML = `
+            <div class="card p-5 text-center text-muted" style="grid-column: 1 / -1;">
+              <div class="text-4xl mb-2">🔍</div>
+              <h3 class="font-bold text-navy text-lg">No matching schemes found</h3>
+              <p class="text-xs text-muted mt-1">We couldn't find any government schemes matching "${escapeHtml(search || 'the selected filters')}".</p>
+              <div class="mt-3">
+                <button class="btn btn-outline btn-sm" onclick="document.getElementById('btn-reset-filters').click();">Reset Filters &amp; Browse All</button>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = schemes.map(s => `
+          <div class="scheme-card">
+            <div>
+              <div class="flex-between align-center mb-2">
+                <span class="badge ${s.is_demo ? 'badge-warning' : 'badge-primary'}">${s.is_demo ? 'DEMO RECORD' : (s.authority_level || 'CENTRAL').toUpperCase()}</span>
+                <span class="text-xs text-muted font-bold">${escapeHtml(s.ministry_or_org || 'Govt of India')}</span>
+              </div>
+              <h3 class="scheme-title font-bold text-navy text-lg">${escapeHtml(s.scheme_name)}</h3>
+              <p class="scheme-desc text-muted text-sm mt-2">${escapeHtml((s.scheme_description || '').substring(0, 135))}...</p>
+            </div>
+            <div class="mt-3">
+              <div class="scheme-meta mb-3">
+                <div><strong>Support:</strong> ${escapeHtml(s.benefit_type || 'Capital Subsidy / Loan')}</div>
+                <div><strong>Max Benefit:</strong> ₹${formatCurrency(s.max_benefit_amount)}</div>
+                <div><strong>Scope:</strong> ${escapeHtml(s.eligible_states || 'All India')}</div>
+              </div>
+              <div class="flex gap-2">
+                <a href="/pages/scheme_details.html?id=${s.id}" class="btn btn-outline btn-sm btn-block text-center">View Details &amp; Steps &rarr;</a>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        container.innerHTML = `
+          <div class="card p-5 text-center" style="grid-column: 1 / -1; border-color: var(--rose-500);">
+            <div class="text-4xl mb-2">⚠️</div>
+            <h3 class="font-bold text-navy text-lg">Unable to load scheme directory</h3>
+            <p class="text-xs text-muted mt-1">${escapeHtml(err.message || 'Please check network connection.')}</p>
+            <div class="mt-3">
+              <button class="btn btn-primary btn-sm" onclick="loadSchemesList();">Retry Search</button>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function updateFilterChips(search, level, category, state) {
+      const container = document.getElementById('active-filter-chips');
+      const chips = document.getElementById('chips-container');
+      const items = [];
+      if (search) items.push({ label: `"${search}"`, clear: () => document.getElementById('filter-search').value = '' });
+      if (level) items.push({ label: level, clear: () => document.getElementById('filter-level').value = '' });
+      if (category) items.push({ label: category, clear: () => document.getElementById('filter-category').value = '' });
+      if (state) items.push({ label: state, clear: () => document.getElementById('filter-state').value = '' });
+
+      if (items.length === 0) {
+        container.classList.add('hidden');
+        return;
+      }
+      container.classList.remove('hidden');
+      chips.innerHTML = items.map((it, idx) => `
+        <span class="badge badge-light" style="cursor: pointer; text-transform: none;" data-idx="${idx}">
+          ${escapeHtml(it.label)} &times;
+        </span>
+      `).join('');
+
+      chips.querySelectorAll('.badge').forEach((badge, idx) => {
+        badge.addEventListener('click', () => {
+          items[idx].clear();
+          loadSchemesList();
+        });
+      });
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[m]));
+    }
+    function formatCurrency(val) {
+      if (!val) return 'Varies';
+      const num = Number(val);
+      if (num >= 10000000) return (num / 10000000).toFixed(1) + ' Crore';
+      if (num >= 100000) return (num / 100000).toFixed(1) + ' Lakh';
+      return num.toLocaleString('en-IN');
+    }
+  </script>
+</body>
+</html>

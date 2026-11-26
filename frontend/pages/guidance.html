@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application Guidance &amp; Document Checklist | AI Scheme Sahayak</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="manifest" href="/manifest.json">
+</head>
+<body class="dashboard-layout">
+  <!-- Top Nav -->
+  <header class="app-header">
+    <div class="header-container">
+      <a href="/" class="brand-logo">
+        <div class="logo-mark">ASS</div>
+        <span class="brand-title">AI Scheme Sahayak</span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="/pages/dashboard.html" class="nav-link">Dashboard</a>
+        <a href="/pages/schemes.html" class="nav-link">Explore Schemes</a>
+        <a href="/pages/saved.html" class="nav-link">Saved &amp; Checklists</a>
+      </nav>
+
+      <div class="header-actions">
+        <button id="btn-print-checklist" class="btn btn-sm btn-outline">🖨️ Print / Save PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container py-4">
+    <div class="card p-4 mb-4">
+      <div class="flex-between align-center">
+        <div>
+          <span class="badge badge-accent">Interactive Document Checklist</span>
+          <h2 class="font-bold text-navy mt-1" id="checklist-scheme-title">Application Readiness Guide</h2>
+          <p class="text-sm text-muted">Tick off documents as you gather them. Your progress is saved automatically.</p>
+        </div>
+        <div class="text-right">
+          <div class="text-xs text-muted">Readiness Progress:</div>
+          <div class="font-bold text-lg text-emerald" id="readiness-pct">0%</div>
+        </div>
+      </div>
+
+      <div class="progress-track mt-3">
+        <div id="readiness-bar-fill" class="progress-fill" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <!-- Checklist Items -->
+    <div class="card p-4 mb-4">
+      <h3 class="font-bold text-navy mb-3">Required Documents Verification</h3>
+      <div id="checklist-items-container" class="checklist-interactive-list">
+        <div class="loading-spinner p-4 text-center">Loading checklist...</div>
+      </div>
+    </div>
+
+    <!-- Step Procedures -->
+    <div class="card p-4">
+      <h3 class="font-bold text-navy mb-3">Official Application Process</h3>
+      <div id="guidance-steps-container">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </main>
+
+  <script src="/static/js/i18n.js"></script>
+  <script src="/static/js/checklist.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const schemeId = urlParams.get('scheme_id');
+
+      if (!schemeId) {
+        document.getElementById('checklist-items-container').innerHTML = '<p class="text-danger">Please choose a scheme from the Schemes page or Dashboard.</p>';
+        return;
+      }
+
+      // Initialize or get checklist
+      try {
+        const initRes = await fetch(`/api/checklist/${schemeId}`);
+        const data = await initRes.json();
+        const scheme = data.scheme || {};
+        document.getElementById('checklist-scheme-title').textContent = scheme.scheme_name || 'Scheme Application Checklist';
+
+        renderItems(data.items || [], schemeId);
+        renderSteps(data.steps || []);
+      } catch (e) {
+        console.error('Error fetching checklist:', e);
+      }
+
+      document.getElementById('btn-print-checklist').addEventListener('click', () => {
+        window.print();
+      });
+    });
+
+    function renderItems(items, schemeId) {
+      const container = document.getElementById('checklist-items-container');
+      if (items.length === 0) {
+        container.innerHTML = '<p class="text-muted">Standard documents: Aadhaar, PAN, Bank Passbook, Caste Certificate (if applicable).</p>';
+        return;
+      }
+
+      updateProgress(items);
+
+      container.innerHTML = items.map(item => `
+        <div class="checklist-item-row p-3 mb-2 border rounded flex-between align-center ${item.is_ready ? 'bg-light-green' : ''}">
+          <label class="checkbox-label flex align-center">
+            <input type="checkbox" class="doc-chk" data-item-id="${item.id}" ${item.is_ready ? 'checked' : ''}>
+            <div class="ml-3">
+              <span class="font-bold text-sm ${item.is_ready ? 'line-through text-muted' : 'text-navy'}">${escapeHtml(item.item_name)}</span>
+              <div class="text-xs text-muted">${escapeHtml(item.notes || 'Gather official copy')}</div>
+            </div>
+          </label>
+          <span class="badge ${item.is_mandatory ? 'badge-warning' : 'badge-light'} text-xs">${item.is_mandatory ? 'Mandatory' : 'Optional'}</span>
+        </div>
+      `).join('');
+
+      // Add change listeners
+      container.querySelectorAll('.doc-chk').forEach(chk => {
+        chk.addEventListener('change', async (e) => {
+          const itemId = e.target.dataset.itemId;
+          const isReady = e.target.checked;
+          await fetch(`/api/checklist/item/${itemId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ is_ready: isReady })
+          });
+          e.target.closest('.checklist-item-row').classList.toggle('bg-light-green', isReady);
+          recomputeFromDOM();
+        });
+      });
+    }
+
+    function recomputeFromDOM() {
+      const all = document.querySelectorAll('.doc-chk');
+      const checked = document.querySelectorAll('.doc-chk:checked');
+      const pct = all.length > 0 ? Math.round((checked.length / all.length) * 100) : 0;
+      document.getElementById('readiness-pct').textContent = pct + '%';
+      document.getElementById('readiness-bar-fill').style.width = pct + '%';
+    }
+
+    function updateProgress(items) {
+      const done = items.filter(i => i.is_ready).length;
+      const pct = items.length > 0 ? Math.round((done / items.length) * 100) : 0;
+      document.getElementById('readiness-pct').textContent = pct + '%';
+      document.getElementById('readiness-bar-fill').style.width = pct + '%';
+    }
+
+    function renderSteps(steps) {
+      const container = document.getElementById('guidance-steps-container');
+      if (steps.length === 0) {
+        container.innerHTML = '<p class="text-muted text-sm">Steps are specified in the official ministry guidelines.</p>';
+        return;
+      }
+      container.innerHTML = steps.map((s, idx) => `
+        <div class="timeline-step mb-3">
+          <div class="step-badge">${idx + 1}</div>
+          <div class="step-detail">
+            <h4 class="font-bold text-sm text-navy">${escapeHtml(s.title)}</h4>
+            <p class="text-xs text-muted mt-1">${escapeHtml(s.instructions || '')}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[m]));
+    }
+  </script>
+</body>
+</html>

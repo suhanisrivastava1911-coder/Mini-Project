@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How It Works | AI Scheme Sahayak</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="manifest" href="/manifest.json">
+</head>
+<body>
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <a href="/" class="brand-logo" aria-label="AI Scheme Sahayak Home">
+        <div class="logo-mark">ASS</div>
+        <div class="brand-text">
+          <span class="brand-title">AI Scheme Sahayak</span>
+          <span class="brand-sub">Government &amp; Private Scheme Matching</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu" id="nav-menu">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/pages/schemes.html" class="nav-link">Explore Schemes</a>
+        <a href="/pages/how_it_works.html" class="nav-link active">How It Works</a>
+        <a href="/pages/about.html" class="nav-link">About &amp; Ethics</a>
+        <a href="/pages/chat.html" class="nav-link nav-highlight">✨ AI Assistant</a>
+      </nav>
+
+      <div class="header-actions">
+        <div id="auth-buttons" class="auth-buttons flex gap-2">
+          <a href="/pages/login.html" class="btn btn-outline btn-sm">Login</a>
+          <a href="/pages/register.html" class="btn btn-primary btn-sm">Register</a>
+        </div>
+        <div id="user-avatar" class="user-avatar hidden flex align-center gap-2">
+          <a href="/pages/dashboard.html" class="btn btn-sm btn-outline" id="user-display-name">Dashboard</a>
+          <button id="btn-logout" class="btn btn-sm btn-danger">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container py-5">
+    <div class="max-w-800 mx-auto">
+      <div class="text-center mb-5">
+        <span class="badge badge-accent">Architectural Deep-Dive</span>
+        <h1 class="font-bold text-navy mt-2" style="font-size: 2.25rem; line-height: 1.25;">
+          The 4-Stage Intelligent Matching Engine
+        </h1>
+        <p class="text-muted" style="font-size: 1.05rem; margin-top: 0.5rem;">
+          How AI Scheme Sahayak eliminates guesswork and connects marginalized entrepreneurs to verified government capital
+        </p>
+      </div>
+
+      <!-- Stage 1 -->
+      <div class="card p-4 mb-4" style="border-left: 4px solid var(--primary-600);">
+        <div class="flex align-start">
+          <div class="step-badge mr-3" style="width: 36px; height: 36px; min-width: 36px; border-radius: 50%; background: var(--primary-600); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; margin-right: 1.25rem;">1</div>
+          <div>
+            <h3 class="font-bold text-navy" style="font-size: 1.25rem; margin-bottom: 0.35rem;">Multilingual NLP &amp; Speech Input</h3>
+            <p class="text-muted" style="font-size: 0.95rem; line-height: 1.5;">
+              Entrepreneurs describe their business, location, caste, and loan requirements in English, Hindi, Hinglish, or their regional language using speech or conversational text.
+            </p>
+            <div class="p-3 bg-light rounded text-xs mt-3" style="border: 1px solid var(--border-color); background: #F8FAFC;">
+              <strong style="color: var(--navy-800);">Example:</strong> Spoken input <em style="color: var(--primary-700);">"Hamari handloom ki dukan hai Varanasi mein, 3 lakh loan chahiye"</em> is processed through Hinglish entity normalizers to extract:
+              <pre style="background: #0F172A; color: #38BDF8; padding: 0.5rem; border-radius: 6px; margin-top: 0.5rem; font-size: 0.82rem; overflow-x: auto;">{ "business_sector": "Textiles & Handloom", "district": "Varanasi", "state": "Uttar Pradesh", "funding_requirement": 300000 }</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 2 -->
+      <div class="card p-4 mb-4" style="border-left: 4px solid var(--indigo-600);">
+        <div class="flex align-start">
+          <div class="step-badge mr-3" style="width: 36px; height: 36px; min-width: 36px; border-radius: 50%; background: var(--indigo-600); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; margin-right: 1.25rem;">2</div>
+          <div>
+            <h3 class="font-bold text-navy" style="font-size: 1.25rem; margin-bottom: 0.35rem;">Deterministic Hard Eligibility Filter Gate</h3>
+            <p class="text-muted" style="font-size: 0.95rem; line-height: 1.5;">
+              Before calculating relevance scores, the engine runs strict mandatory eligibility rules:
+            </p>
+            <div class="grid-2col gap-3 mt-3">
+              <div style="background: #F8FAFC; padding: 0.85rem; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.88rem;">
+                <strong style="color: var(--navy-800);">Target Gender:</strong> Non-women entrepreneurs cannot pass women-only schemes (e.g. Stand-Up India for non-SC/ST).
+              </div>
+              <div style="background: #F8FAFC; padding: 0.85rem; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.88rem;">
+                <strong style="color: var(--navy-800);">Caste / Social Category:</strong> Strict SC/ST criteria for specialized concession schemes (e.g. NSFDC MSY).
+              </div>
+              <div style="background: #F8FAFC; padding: 0.85rem; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.88rem;">
+                <strong style="color: var(--navy-800);">State / Jurisdiction:</strong> State-specific schemes (e.g. UP MMYSY) are restricted to entrepreneurs in that state.
+              </div>
+              <div style="background: #F8FAFC; padding: 0.85rem; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.88rem;">
+                <strong style="color: var(--navy-800);">Financial Caps:</strong> Maximum project costs and turnover ceilings strictly enforced.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 3 -->
+      <div class="card p-4 mb-4" style="border-left: 4px solid var(--teal-600);">
+        <div class="flex align-start">
+          <div class="step-badge mr-3" style="width: 36px; height: 36px; min-width: 36px; border-radius: 50%; background: var(--teal-600); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; margin-right: 1.25rem;">3</div>
+          <div>
+            <h3 class="font-bold text-navy" style="font-size: 1.25rem; margin-bottom: 0.35rem;">Weighted Relevance Scoring (0 - 100)</h3>
+            <p class="text-muted" style="font-size: 0.95rem; line-height: 1.5;">
+              Schemes that pass the hard gate receive a transparent multi-factor score:
+            </p>
+            <div class="grid-2col gap-3 mt-3">
+              <div style="background: #F8FAFC; padding: 0.85rem; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.88rem;">
+                <strong>Funding Alignment:</strong> Match between requested capital and scheme benefit ceiling.
+              </div>
+              <div style="background: #F8FAFC; padding: 0.85rem; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.88rem;">
+                <strong>Sector Fit:</strong> Priority match for targeted crafts, manufacturing, or services.
+              </div>
+              <div style="background: #F8FAFC; padding: 0.85rem; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.88rem;">
+                <strong>Social Category Priority:</strong> Higher weighting for marginalized communities.
+              </div>
+              <div style="background: #F8FAFC; padding: 0.85rem; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.88rem;">
+                <strong>Stage Suitability:</strong> Greenfield ideation vs early expansion fit.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 4 -->
+      <div class="card p-4 mb-4" style="border-left: 4px solid var(--emerald-600);">
+        <div class="flex align-start">
+          <div class="step-badge mr-3" style="width: 36px; height: 36px; min-width: 36px; border-radius: 50%; background: var(--emerald-600); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; margin-right: 1.25rem;">4</div>
+          <div>
+            <h3 class="font-bold text-navy" style="font-size: 1.25rem; margin-bottom: 0.35rem;">Actionable Guidance &amp; Official Portals</h3>
+            <p class="text-muted" style="font-size: 0.95rem; line-height: 1.5;">
+              Entrepreneurs receive ranked recommendations with clear reasoning, required document checklists, and direct links to official government application portals.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-5">
+        <a href="/pages/schemes.html" class="btn btn-primary btn-lg" style="padding: 0.85rem 2rem; font-weight: 700; margin-right: 0.75rem;">
+          Explore Schemes &rarr;
+        </a>
+        <a href="/pages/chat.html" class="btn btn-outline btn-lg" style="padding: 0.85rem 2rem; font-weight: 700;">
+          Try AI Voice &amp; Chat Assistant &rarr;
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container text-center">
+      <p>&copy; 2026 AI Scheme Sahayak &bull; Problem Statement ID: 26092 &bull; Smart Automation</p>
+    </div>
+  </footer>
+
+  <script>
+    // Header Auth Detection
+    async function checkAuthStatus() {
+      try {
+        const res = await fetch('/api/auth/me');
+        const data = await res.json();
+        if (data.authenticated) {
+          const authBtns = document.getElementById('auth-buttons');
+          const userAvatar = document.getElementById('user-avatar');
+          const userDisplayName = document.getElementById('user-display-name');
+          if (authBtns) authBtns.classList.add('hidden');
+          if (userAvatar) userAvatar.classList.remove('hidden');
+          if (userDisplayName) userDisplayName.textContent = 'Dashboard (' + (data.user.name || 'User') + ')';
+        }
+      } catch (e) {
+        const stored = localStorage.getItem('user');
+        if (stored) {
+          try {
+            const user = JSON.parse(stored);
+            const authBtns = document.getElementById('auth-buttons');
+            const userAvatar = document.getElementById('user-avatar');
+            const userDisplayName = document.getElementById('user-display-name');
+            if (authBtns) authBtns.classList.add('hidden');
+            if (userAvatar) userAvatar.classList.remove('hidden');
+            if (userDisplayName) userDisplayName.textContent = 'Dashboard (' + (user.name || 'User') + ')';
+          } catch(err){}
+        }
+      }
+    }
+    checkAuthStatus();
+
+    const btnLogout = document.getElementById('btn-logout');
+    if (btnLogout) {
+      btnLogout.addEventListener('click', async () => {
+        try {
+          await fetch('/api/auth/logout', { method: 'POST' });
+        } catch(e){}
+        localStorage.removeItem('user');
+        window.location.href = '/pages/login.html';
+      });
+    }
+  </script>
+</body>
+</html>

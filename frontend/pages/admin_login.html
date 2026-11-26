@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin &amp; Officer Login | AI Scheme Sahayak</title>
+  <link rel="stylesheet" href="/static/css/admin.css">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="auth-page admin-auth-body">
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="text-center mb-4">
+        <a href="/" class="brand-logo justify-center">
+          <div class="logo-mark">ASS</div>
+          <span class="brand-title">Admin Portal</span>
+        </a>
+        <h2 class="auth-title mt-2">Government / System Officer</h2>
+        <p class="text-muted text-sm">Sign in to manage schemes, verification status, and matching analytics</p>
+      </div>
+
+      <div id="admin-alert" class="alert hidden mb-3"></div>
+
+      <form id="admin-login-form">
+        <div class="form-group mb-3">
+          <label for="admin_username" class="form-label">Username</label>
+          <input type="text" id="admin_username" class="form-input" placeholder="superadmin" required autocomplete="username">
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="admin_password" class="form-label">Password</label>
+          <input type="password" id="admin_password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" id="btn-admin-submit" class="btn btn-primary btn-block btn-lg mt-3">
+          Access Admin Dashboard &rarr;
+        </button>
+      </form>
+
+      <div class="auth-demo-hint mt-4 p-3 bg-light rounded text-xs text-muted">
+        <strong>Default Superadmin Credentials:</strong><br>
+        Username: <code>superadmin</code><br>
+        Password: <code>Admin@Sahayak2026</code>
+      </div>
+
+      <div class="text-center mt-4">
+        <a href="/" class="text-sm text-muted">&larr; Return to Public Portal</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('admin-login-form');
+    const alertBox = document.getElementById('admin-alert');
+    const btnSubmit = document.getElementById('btn-admin-submit');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alertBox.className = 'alert hidden';
+      btnSubmit.disabled = true;
+      btnSubmit.textContent = 'Verifying credentials...';
+
+      const username = document.getElementById('admin_username').value.trim();
+      const password = document.getElementById('admin_password').value;
+
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          alertBox.className = 'alert alert-success';
+          alertBox.textContent = 'Authorized! Redirecting to admin console...';
+          setTimeout(() => {
+            window.location.href = '/pages/admin.html';
+          }, 800);
+        } else {
+          alertBox.className = 'alert alert-danger';
+          alertBox.textContent = data.error || 'Invalid officer credentials.';
+          btnSubmit.disabled = false;
+          btnSubmit.textContent = 'Access Admin Dashboard →';
+        }
+      } catch (e) {
+        alertBox.className = 'alert alert-danger';
+        alertBox.textContent = 'Connection failed. Please retry.';
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = 'Access Admin Dashboard →';
+      }
+    });
+  </script>
+</body>
+</html>

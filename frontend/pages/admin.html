@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | AI Scheme Sahayak</title>
+  <link rel="stylesheet" href="/static/css/admin.css">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="admin-layout">
+  <!-- Admin Header -->
+  <header class="admin-topbar">
+    <div class="admin-brand">
+      <div class="logo-mark">ASS</div>
+      <span class="font-bold text-white ml-2">Scheme Sahayak Administration</span>
+    </div>
+    <div class="admin-user-info">
+      <span class="badge badge-accent" id="admin-role-badge">Superadmin</span>
+      <span class="text-white text-sm ml-2" id="admin-name">Administrator</span>
+      <button id="btn-admin-logout" class="btn btn-xs btn-outline ml-3">Logout</button>
+    </div>
+  </header>
+
+  <div class="admin-body">
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar">
+      <nav class="admin-nav">
+        <a href="#stats" class="admin-nav-item active" data-tab="tab-stats">📊 Overview &amp; Stats</a>
+        <a href="#schemes" class="admin-nav-item" data-tab="tab-schemes">📜 Scheme Master (CRUD)</a>
+        <a href="#users" class="admin-nav-item" data-tab="tab-users">👥 Registered Users</a>
+        <a href="#audit" class="admin-nav-item" data-tab="tab-audit">🔍 Audit Logs</a>
+        <a href="/" target="_blank" class="admin-nav-item mt-4">🌐 View Public Portal</a>
+      </nav>
+    </aside>
+
+    <!-- Admin Main Content -->
+    <main class="admin-main p-4">
+      <!-- Tab 1: Stats & Overview -->
+      <section id="tab-stats" class="admin-tab-pane active">
+        <h2 class="font-bold text-navy mb-3">System Overview &amp; Analytics</h2>
+        <div class="stat-grid mb-4">
+          <div class="stat-card">
+            <div class="stat-icon">📜</div>
+            <div class="stat-info">
+              <div class="stat-val" id="admin-total-schemes">0</div>
+              <div class="stat-label">Total Schemes</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-info">
+              <div class="stat-val" id="admin-total-users">0</div>
+              <div class="stat-label">Registered Entrepreneurs</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-info">
+              <div class="stat-val" id="admin-total-matches">0</div>
+              <div class="stat-label">Total Match Executions</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">📋</div>
+            <div class="stat-info">
+              <div class="stat-val" id="admin-total-checklists">0</div>
+              <div class="stat-label">Active Document Checklists</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card p-4">
+          <h3 class="font-bold text-navy mb-2">Category Distribution</h3>
+          <div id="stats-category-breakdown" class="text-sm">
+            <p class="text-muted">Loading breakdown...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab 2: Scheme Master CRUD -->
+      <section id="tab-schemes" class="admin-tab-pane hidden">
+        <div class="flex-between align-center mb-3">
+          <h2 class="font-bold text-navy">Scheme Master Repository</h2>
+          <button id="btn-add-scheme-modal" class="btn btn-primary btn-sm">+ Add New Scheme</button>
+        </div>
+
+        <div class="card p-3 table-responsive">
+          <table class="admin-table" id="schemes-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Scheme Name</th>
+                <th>Level</th>
+                <th>Max Benefit</th>
+                <th>Type</th>
+                <th>Verified?</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="schemes-table-body">
+              <tr><td colspan="7" class="text-center p-3">Loading schemes...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Tab 3: Users -->
+      <section id="tab-users" class="admin-tab-pane hidden">
+        <h2 class="font-bold text-navy mb-3">Registered Entrepreneurs</h2>
+        <div class="card p-3 table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Language</th>
+                <th>Created At</th>
+              </tr>
+            </thead>
+            <tbody id="users-table-body">
+              <tr><td colspan="5" class="text-center p-3">Loading users...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Tab 4: Audit Logs -->
+      <section id="tab-audit" class="admin-tab-pane hidden">
+        <h2 class="font-bold text-navy mb-3">Security &amp; Verification Audit Logs</h2>
+        <div class="card p-3 table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Admin User</th>
+                <th>Action</th>
+                <th>Target ID</th>
+                <th>IP Address</th>
+              </tr>
+            </thead>
+            <tbody id="audit-table-body">
+              <tr><td colspan="5" class="text-center p-3">Loading audit logs...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal: Create Scheme -->
+  <div id="modal-add-scheme" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="flex-between align-center mb-3">
+        <h3 class="font-bold text-navy">Add New Scheme</h3>
+        <button id="btn-close-modal" class="btn btn-xs btn-outline">&times;</button>
+      </div>
+
+      <form id="form-create-scheme">
+        <div class="form-group mb-2">
+          <label class="form-label text-xs">Scheme Name *</label>
+          <input type="text" id="new-scheme-name" class="form-input form-input-sm" required>
+        </div>
+        <div class="form-group mb-2">
+          <label class="form-label text-xs">Ministry / Provider *</label>
+          <input type="text" id="new-scheme-provider" class="form-input form-input-sm" required>
+        </div>
+        <div class="grid-2col-form">
+          <div class="form-group mb-2">
+            <label class="form-label text-xs">Level</label>
+            <select id="new-scheme-level" class="form-select form-select-sm">
+              <option value="central">Central</option>
+              <option value="state">State</option>
+              <option value="private">Private / CSR</option>
+            </select>
+          </div>
+          <div class="form-group mb-2">
+            <label class="form-label text-xs">Max Benefit Amount (₹)</label>
+            <input type="number" id="new-scheme-benefit" class="form-input form-input-sm" placeholder="1000000">
+          </div>
+        </div>
+        <div class="form-group mb-2">
+          <label class="form-label text-xs">Description</label>
+          <textarea id="new-scheme-desc" class="form-input form-input-sm" rows="3"></textarea>
+        </div>
+        <div class="form-group mb-3">
+          <label class="checkbox-label text-xs">
+            <input type="checkbox" id="new-scheme-isdemo">
+            Mark as Demo / Synthetic Record
+          </label>
+        </div>
+        <div class="flex-between">
+          <button type="submit" class="btn btn-primary btn-sm">Save Scheme</button>
+          <button type="button" id="btn-cancel-modal" class="btn btn-outline btn-sm">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/static/js/admin.js"></script>
+</body>
+</html>

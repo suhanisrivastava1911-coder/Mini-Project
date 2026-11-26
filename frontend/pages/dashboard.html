@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | AI Scheme Sahayak</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="manifest" href="/manifest.json">
+</head>
+<body class="dashboard-layout">
+  <!-- Top Nav -->
+  <header class="app-header">
+    <div class="header-container">
+      <a href="/" class="brand-logo">
+        <div class="logo-mark">ASS</div>
+        <div class="brand-text">
+          <span class="brand-title">AI Scheme Sahayak</span>
+          <span class="brand-sub">Entrepreneur Dashboard</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="/pages/dashboard.html" class="nav-link active">Dashboard</a>
+        <a href="/pages/chat.html" class="nav-link">✨ AI Assistant</a>
+        <a href="/pages/profile.html" class="nav-link">My Profile</a>
+        <a href="/pages/schemes.html" class="nav-link">Explore Schemes</a>
+        <a href="/pages/saved.html" class="nav-link">Saved (<span id="saved-count">0</span>)</a>
+      </nav>
+
+      <div class="header-actions">
+        <span id="user-greeting" class="text-sm font-bold text-navy">Welcome</span>
+        <button id="btn-logout" class="btn btn-sm btn-outline">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container py-5">
+    <!-- Welcome Banner with Progress -->
+    <div class="dashboard-banner mb-5">
+      <div class="banner-content">
+        <div class="badge badge-accent mb-2" style="background: rgba(255,255,255,0.15); color: #FFFFFF; border: none;">Live Eligibility Status</div>
+        <h2 id="banner-greeting">Welcome to Your Scheme Sahayak Hub</h2>
+        <p class="text-sm mt-1" style="color: #CBD5E1; max-width: 550px;">
+          Your profile is evaluated continuously against central, state, and private CSR schemes.
+        </p>
+        <div class="profile-progress-bar-wrapper mt-4">
+          <div class="flex-between text-xs mb-1" style="color: #E2E8F0;">
+            <span>Profile Completeness: <strong id="profile-percent">0%</strong></span>
+            <a href="/pages/profile.html" class="text-white font-bold" style="text-decoration: underline;">Complete Profile &rarr;</a>
+          </div>
+          <div class="progress-track">
+            <div id="profile-progress-fill" class="progress-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="banner-action mt-3">
+        <a href="/pages/chat.html" class="btn btn-accent btn-lg">
+          🎙️ Speak to AI Assistant &rarr;
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick Stats Cards -->
+    <div class="stat-grid mb-5">
+      <div class="stat-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-info">
+          <div class="stat-val" id="stat-matched-count">0</div>
+          <div class="stat-label">Eligible Matched Schemes</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">🌟</div>
+        <div class="stat-info">
+          <div class="stat-val" id="stat-high-relevance">0</div>
+          <div class="stat-label">Highly Recommended (>80%)</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">📌</div>
+        <div class="stat-info">
+          <div class="stat-val" id="stat-saved-count">0</div>
+          <div class="stat-label">Bookmarked Schemes</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">📝</div>
+        <div class="stat-info">
+          <div class="stat-val" id="stat-checklist-count">0</div>
+          <div class="stat-label">Active Document Checklists</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Section: Ranked Recommended Schemes -->
+    <div class="grid-2col">
+      <!-- Left Column: Matched Schemes -->
+      <section>
+        <div class="flex-between align-center mb-3">
+          <div>
+            <h3 class="font-bold text-navy text-xl">Recommended Schemes For You</h3>
+            <p class="text-xs text-muted">Evaluated through 4-stage transparent eligibility engine</p>
+          </div>
+          <button id="btn-recalculate" class="btn btn-xs btn-outline">🔄 Re-evaluate</button>
+        </div>
+
+        <div id="recommended-schemes-list" class="scheme-vertical-list flex-column gap-3">
+          <div class="card p-5 text-center text-muted">Loading matching schemes...</div>
+        </div>
+      </section>
+
+      <!-- Right Column: Profile Summary & Saved Checklists -->
+      <section class="flex-column gap-4">
+        <div class="card p-4">
+          <div class="flex-between align-center mb-3 pb-2 border-bottom">
+            <h4 class="font-bold text-navy text-base">Profile Parameters</h4>
+            <a href="/pages/profile.html" class="btn btn-xs btn-outline">Edit</a>
+          </div>
+          <div id="profile-summary-box" class="profile-summary-list text-sm">
+            <div class="text-muted">Loading profile details...</div>
+          </div>
+        </div>
+
+        <div class="card p-4">
+          <div class="flex-between align-center mb-3 pb-2 border-bottom">
+            <h4 class="font-bold text-navy text-base">Document Readiness</h4>
+            <a href="/pages/saved.html" class="text-xs text-accent font-bold">View All</a>
+          </div>
+          <div id="active-checklists-box" class="text-sm">
+            <div class="text-muted text-xs">No active document checklists started yet.</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="/static/js/i18n.js"></script>
+  <script src="/static/js/pwa.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const authRes = await fetch('/api/auth/me');
+        if (!authRes.ok) { window.location.href = '/pages/login.html'; return; }
+        const authData = await authRes.json();
+        if (!authData.authenticated) { window.location.href = '/pages/login.html'; return; }
+        document.getElementById('user-greeting').textContent = authData.user.name;
+        document.getElementById('banner-greeting').textContent = `Namaste, ${authData.user.name}!`;
+      } catch (err) {
+        window.location.href = '/pages/login.html';
+        return;
+      }
+
+      document.getElementById('btn-logout').addEventListener('click', async () => {
+        await fetch('/api/auth/logout', { method: 'POST' });
+        window.location.href = '/';
+      });
+
+      loadDashboardData();
+      document.getElementById('btn-recalculate')?.addEventListener('click', () => loadDashboardData());
+    });
+
+    async function loadDashboardData() {
+      try {
+        const profRes = await fetch('/api/profile');
+        let profile = null;
+        if (profRes.ok) {
+          const profData = await profRes.json();
+          profile = profData.profile || {};
+          renderProfileSnapshot(profile);
+        }
+
+        const matchRes = await fetch('/api/matching/find-schemes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ profile: profile || {} })
+        });
+
+        if (matchRes.ok) {
+          const matchData = await matchRes.json();
+          renderMatches(matchData.results || []);
+        }
+
+        const savedRes = await fetch('/api/schemes/saved');
+        if (savedRes.ok) {
+          const sData = await savedRes.json();
+          const count = (sData.saved_schemes || []).length;
+          document.getElementById('stat-saved-count').textContent = count;
+          document.getElementById('saved-count').textContent = count;
+        }
+
+        const checkRes = await fetch('/api/checklist');
+        if (checkRes.ok) {
+          const cData = await checkRes.json();
+          const items = cData.checklists || [];
+          document.getElementById('stat-checklist-count').textContent = items.length;
+          renderChecklists(items);
+        }
+      } catch (e) {
+        console.error('Error loading dashboard:', e);
+      }
+    }
+
+    function renderProfileSnapshot(p) {
+      const box = document.getElementById('profile-summary-box');
+      if (!p || Object.keys(p).length === 0) {
+        box.innerHTML = '<p class="text-muted text-xs">Profile incomplete. <a href="/pages/profile.html" class="text-accent font-bold">Complete profile &rarr;</a></p>';
+        return;
+      }
+      const fields = ['gender', 'social_category', 'state', 'sector', 'household_income', 'business_stage'];
+      const filled = fields.filter(f => p[f] && p[f] !== 'Not specified').length;
+      const pct = Math.round((filled / fields.length) * 100);
+
+      document.getElementById('profile-percent').textContent = pct + '%';
+      document.getElementById('profile-progress-fill').style.width = pct + '%';
+
+      box.innerHTML = `
+        <div class="detail-row"><span>State / District:</span> <strong>${escapeHtml(p.state || 'Any')}${p.district ? ', ' + escapeHtml(p.district) : ''}</strong></div>
+        <div class="detail-row"><span>Gender:</span> <strong>${escapeHtml(p.gender || 'Not specified')}</strong></div>
+        <div class="detail-row"><span>Category:</span> <strong>${escapeHtml(p.social_category || 'Not specified')}</strong></div>
+        <div class="detail-row"><span>Sector:</span> <strong>${escapeHtml(p.sector || p.business_sector || 'General')}</strong></div>
+        <div class="detail-row"><span>Stage:</span> <strong>${escapeHtml(p.business_stage || 'Ideation')}</strong></div>
+        <div class="detail-row"><span>Annual Income:</span> <strong>₹${Number(p.household_income || p.annual_income || 0).toLocaleString('en-IN')}</strong></div>
+        <div class="detail-row"><span>Funding Needed:</span> <strong>₹${Number(p.funding_requirement || 0).toLocaleString('en-IN')}</strong></div>
+      `;
+    }
+
+    function renderMatches(recs) {
+      const container = document.getElementById('recommended-schemes-list');
+      const eligible = recs.filter(r => r.eligibility_status === 'Eligible');
+      document.getElementById('stat-matched-count').textContent = eligible.length;
+      const highRel = eligible.filter(r => (r.match_score || 0) >= 80).length;
+      document.getElementById('stat-high-relevance').textContent = highRel;
+
+      if (!recs || recs.length === 0) {
+        container.innerHTML = '<div class="card p-4 text-center text-muted">No schemes found matching mandatory criteria.</div>';
+        return;
+      }
+
+      container.innerHTML = recs.map(r => `
+        <div class="scheme-match-card">
+          <div class="flex-between align-start">
+            <div>
+              <div class="flex align-center gap-2 mb-1">
+                <span class="badge ${r.is_demo ? 'badge-warning' : 'badge-primary'}">${r.is_demo ? 'DEMO' : (r.authority_level || 'CENTRAL').toUpperCase()}</span>
+                <span class="badge ${r.eligibility_status === 'Eligible' ? 'badge-success' : 'badge-danger'}">${r.eligibility_status}</span>
+              </div>
+              <h4 class="font-bold text-navy text-base mt-1">${escapeHtml(r.scheme_name)}</h4>
+              <p class="text-xs text-muted">${escapeHtml(r.ministry_or_org || '')}</p>
+            </div>
+            <div class="match-score-badge ${r.match_score >= 80 ? 'score-high' : (r.match_score >= 50 ? 'score-med' : 'score-low')}">
+              ${Math.round(r.match_score || 0)}% Match
+            </div>
+          </div>
+
+          <div class="reasons-list mt-2">
+            ${(r.matched_criteria || []).slice(0, 3).map(m => `
+              <div class="reason-pill">✓ ${escapeHtml(m.criterion)}: ${escapeHtml(m.detail)}</div>
+            `).join('')}
+          </div>
+
+          <div class="flex-between align-center mt-3 pt-3 border-top flex-wrap gap-2">
+            <span class="text-xs text-muted"><strong>Max Benefit:</strong> ₹${formatCurrency(r.max_benefit_amount)}</span>
+            <a href="/pages/scheme_details.html?id=${r.scheme_id}" class="btn btn-xs btn-outline">Checklist &amp; Steps &rarr;</a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderChecklists(list) {
+      const box = document.getElementById('active-checklists-box');
+      if (!list || list.length === 0) {
+        box.innerHTML = '<p class="text-muted text-xs">No active checklists. Browse schemes and click "Interactive Checklist" to start.</p>';
+        return;
+      }
+      box.innerHTML = list.slice(0, 3).map(c => `
+        <div class="py-2 border-bottom">
+          <div class="font-bold text-xs text-navy">${escapeHtml(c.scheme_name)}</div>
+          <div class="flex-between text-xs text-muted mt-1">
+            <span>Ready: ${c.completed_items || 0} / ${c.total_items || 0} docs</span>
+            <a href="/pages/guidance.html?scheme_id=${c.scheme_id}" class="text-accent font-bold">Open &rarr;</a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[m]));
+    }
+    function formatCurrency(val) {
+      if (!val) return 'Varies';
+      const num = Number(val);
+      if (num >= 10000000) return (num / 10000000).toFixed(1) + ' Crore';
+      if (num >= 100000) return (num / 100000).toFixed(1) + ' Lakh';
+      return num.toLocaleString('en-IN');
+    }
+  </script>
+</body>
+</html>

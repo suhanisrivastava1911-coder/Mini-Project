@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | AI Scheme Sahayak</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="manifest" href="/manifest.json">
+  <style>
+    .auth-split-wrapper {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      background: #FFFFFF;
+    }
+    .auth-brand-side {
+      background: var(--grad-dark);
+      color: #FFFFFF;
+      padding: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-form-side {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3.5rem 4.5rem;
+      background: #FFFFFF;
+    }
+    .password-input-wrap {
+      position: relative;
+    }
+    .toggle-pw-btn {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      padding: 0.25rem;
+    }
+    @media (max-width: 900px) {
+      .auth-split-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .auth-brand-side {
+        display: none;
+      }
+      .auth-form-side {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body style="background: #FFFFFF;">
+  <div class="auth-split-wrapper">
+    <!-- Left Brand & Value Proposition Column -->
+    <div class="auth-brand-side">
+      <div>
+        <a href="/" class="brand-logo" style="color: #FFFFFF;">
+          <div class="logo-mark">ASS</div>
+          <div class="brand-text">
+            <span class="brand-title" style="color: #FFFFFF; font-size: 1.25rem;">AI Scheme Sahayak</span>
+            <span class="brand-sub" style="color: var(--primary-400);">Govt Scheme Discovery Platform</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="my-auto py-5">
+        <span class="badge badge-accent mb-3" style="background: rgba(99,102,241,0.25); color: #FFFFFF; border-color: rgba(255,255,255,0.2);">Empowering Entrepreneurs</span>
+        <h1 style="font-size: 2.25rem; font-weight: 800; line-height: 1.2; color: #FFFFFF; margin-bottom: 1.25rem;">
+          Access the right financial assistance for your enterprise.
+        </h1>
+        <p style="color: #CBD5E1; font-size: 1.05rem; line-height: 1.6; max-width: 480px;">
+          Log in to discover 100% eligible Central &amp; State government schemes, capital subsidies, and collateral-free loans with zero guesswork.
+        </p>
+
+        <div class="flex gap-4 mt-5" style="border-top: 1px solid rgba(255,255,255,0.15); padding-top: 1.5rem;">
+          <div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: #FFFFFF;">12+</div>
+            <div style="font-size: 0.78rem; color: #94A3B8;">Verified Schemes</div>
+          </div>
+          <div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: var(--emerald-400);">100%</div>
+            <div style="font-size: 0.78rem; color: #94A3B8;">Transparent Rules</div>
+          </div>
+          <div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: var(--amber-400);">10</div>
+            <div style="font-size: 0.78rem; color: #94A3B8;">Indian Languages</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size: 0.82rem; color: #64748B;">
+        Problem Statement ID: 26092 | Smart Automation
+      </div>
+    </div>
+
+    <!-- Right Form Column -->
+    <div class="auth-form-side">
+      <div style="max-width: 420px; width: 100%; margin: 0 auto;">
+        <div class="mb-4">
+          <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.35rem;">Sign In to Your Account</h2>
+          <p style="color: var(--text-muted); font-size: 0.92rem;">Enter your email to access scheme recommendations</p>
+        </div>
+
+        <div id="alert-box" class="alert hidden mb-4"></div>
+
+        <form id="login-form">
+          <div class="form-group mb-3">
+            <label for="email" class="form-label" style="font-weight: 600; font-size: 0.9rem;">Email Address *</label>
+            <input type="email" id="email" class="form-input" placeholder="e.g. asha.devi@demo.local" required autocomplete="email" style="font-size: 0.95rem;">
+          </div>
+
+          <div class="form-group mb-3">
+            <div class="flex-between mb-1">
+              <label for="password" class="form-label" style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0;">Password *</label>
+              <a href="/pages/forgot_password.html" style="font-size: 0.82rem; color: var(--primary-600); font-weight: 600;">Forgot password?</a>
+            </div>
+            <div class="password-input-wrap">
+              <input type="password" id="password" class="form-input" placeholder="••••••••" required autocomplete="current-password" style="font-size: 0.95rem; padding-right: 2.5rem;">
+              <button type="button" class="toggle-pw-btn" id="btn-toggle-pw" aria-label="Toggle password visibility">👁️</button>
+            </div>
+          </div>
+
+          <button type="submit" id="btn-submit" class="btn btn-primary btn-block btn-lg mt-4" style="font-size: 1rem; font-weight: 700;">
+            Sign In &amp; Explore Schemes &rarr;
+          </button>
+        </form>
+
+        <div class="p-3 bg-light rounded mt-4" style="border: 1px solid #E2E8F0; font-size: 0.82rem; color: var(--text-body);">
+          <strong style="color: var(--primary-700);">Quick Demo Login:</strong><br>
+          Email: <code style="background: #E2E8F0; padding: 2px 4px; border-radius: 4px;">asha.devi@demo.local</code><br>
+          Password: <code style="background: #E2E8F0; padding: 2px 4px; border-radius: 4px;">DemoPass@123</code>
+        </div>
+
+        <div class="text-center mt-5" style="border-top: 1px solid var(--border-light); padding-top: 1.5rem;">
+          <p style="font-size: 0.92rem; color: var(--text-body);">
+            Don't have an account yet? <a href="/pages/register.html" style="color: var(--primary-600); font-weight: 700;">Create Account</a>
+          </p>
+          <p class="mt-2" style="font-size: 0.85rem;">
+            <a href="/pages/schemes.html" style="color: var(--text-muted);">Explore schemes as guest &rarr;</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/i18n.js"></script>
+  <script>
+    const form = document.getElementById('login-form');
+    const alertBox = document.getElementById('alert-box');
+    const btnSubmit = document.getElementById('btn-submit');
+    const pwInput = document.getElementById('password');
+    const btnTogglePw = document.getElementById('btn-toggle-pw');
+
+    btnTogglePw.addEventListener('click', () => {
+      const isPw = pwInput.type === 'password';
+      pwInput.type = isPw ? 'text' : 'password';
+      btnTogglePw.textContent = isPw ? '🔒' : '👁️';
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alertBox.className = 'alert hidden';
+      btnSubmit.disabled = true;
+      btnSubmit.textContent = 'Verifying credentials...';
+
+      const email = document.getElementById('email').value.trim();
+      const password = pwInput.value;
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          alertBox.className = 'alert alert-success';
+          alertBox.textContent = 'Login successful! Redirecting to Scheme Directory...';
+          const redirectDestination = data.redirect_url || '/pages/schemes.html';
+          setTimeout(() => {
+            window.location.href = redirectDestination;
+          }, 400);
+        } else {
+          alertBox.className = 'alert alert-danger';
+          alertBox.textContent = data.error || 'Invalid email or password.';
+          btnSubmit.disabled = false;
+          btnSubmit.textContent = 'Sign In & Explore Schemes →';
+        }
+      } catch (err) {
+        alertBox.className = 'alert alert-danger';
+        alertBox.textContent = 'Network or server error. Please try again.';
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = 'Sign In & Explore Schemes →';
+      }
+    });
+  </script>
+</body>
+</html>
